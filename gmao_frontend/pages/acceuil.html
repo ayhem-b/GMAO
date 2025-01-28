@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="GMAO - Dashboard">
+    <meta name="author" content="Your Name">
+
+    <title>Accueil</title>
+
+    <!-- Local Bootstrap CSS -->
+    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/home.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+
+</head>
+
+
+
+
+
+
+
+
+<body>
+    <!-- Loader -->
+    <div id="loader">
+        <div class="text-center">
+            <div class="spinner-border text-danger" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="loading-text">Chargement en cours...</p>
+        </div>
+    </div>
+
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="mb-4 text-center">
+                <img src="../img/lear_logo.png" alt="Lear Logo" class="img-fluid" style="max-height: 50px;">
+            </div>
+            <nav class="nav flex-column">
+                <a href="acceuil.html" class="nav-link link "><i class="fas fa-home me-2"></i>Accueil</a>
+                <a href="CEcards.html" class="nav-link link"><i class="fas fa-users me-2"></i>Utilisateurs</a>
+                <a href="workorder.html" class="nav-link link"><i class="fas fa-clipboard-list me-2"></i>Ordre de
+                    travail</a>
+                <a href="maintenance.html" class="nav-link link"><i class="fas fa-tools me-2"></i>Intervention</a>
+                <a href="breakdown.html" class="nav-link link"><i class="fas fa-exclamation-triangle me-2"></i>Arrêt</a>
+                <a href="SPcards.html" class="nav-link link"><i class="fas fa-cogs me-2"></i>Machines</a>
+                <a href="EQcards.html" class="nav-link link"><i class="fas fa-box me-2"></i>Équipement</a>
+                <a href="department.html" class="nav-link link"><i class="fas fa-map-marker-alt me-2"></i>Zones</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-grow-1">
+            <!-- Header -->
+            <header class="bg-light p-3 border-bottom">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="m-0">Bienvenue</h2>
+                    <div class="d-flex align-items-center">
+                        <img src="../img/chef.png" alt="Profile" class="rounded-circle me-2" style="width: 40px;">
+                        <span>Chef</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Statistic Section -->
+            <section class="container my-4">
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="statistic-card green">
+                            <i class="fas fa-calendar-check fa-3x mb-3"></i>
+                            <h5>Ordre de Travail</h5>
+                            <p>Accomplissez les tâches prioritaires tout en vous assurant qu'aucune tâche de faible
+                                priorité ne passe à travers les mailles du filet.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="statistic-card orange">
+                            <i class="fas fa-cogs fa-3x mb-3"></i>
+                            <h5>Gestion des Pièces</h5>
+                            <p>Suivez et rapportez la consommation des articles grâce à des enregistrements d'inventaire
+                                simples.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="statistic-card blue">
+                            <i class="fas fa-chart-line fa-3x mb-3"></i>
+                            <h5>Consulter les Rapports</h5>
+                            <p>Accédez aux rapports clés comme PPM, installation et inspection quotidienne.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-4 mt-3">
+                    <div class="col-md-4">
+                        <div class="statistic-card red">
+                            <i class="fas fa-heartbeat fa-3x mb-3"></i>
+                            <h5>Prolonger la Durée de Vie des Équipements</h5>
+                            <p>Identifiez les zones problématiques de vos équipements en vérifiant l'historique des
+                                ordres de travail et en restant à jour sur l'entretien programmé.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="statistic-card violet">
+                            <i class="fas fa-clock fa-3x mb-3"></i>
+                            <h5>Minimiser les Temps d'Arrêt</h5>
+                            <p>Réduisez les temps d'arrêt en optimisant la planification de la maintenance et en
+                                raccourcissant les délais de réponse aux réparations d'urgence.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="statistic-card blue2">
+                            <i class="fas fa-dollar-sign fa-3x mb-3"></i>
+                            <h5>Réduire les Dépenses de Maintenance</h5>
+                            <p>Diminuez le nombre de pannes coûteuses et développez une meilleure gestion de
+                                l'utilisation des pièces et des fournitures.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Local Bootstrap Bundle JS -->
+        <script src="../bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+
+
+
+</script>
+
+<script src="../js/main.js"></script>
+
+</html>
