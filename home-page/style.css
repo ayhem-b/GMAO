@@ -1,0 +1,18 @@
+.mini_logo img{
+    width: 80px;
+}
+.datetime {
+    text-align:left;
+    font-size: 20px;
+    margin-top: 0%;
+}
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 98%;
+    background: #e4e4e4;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}

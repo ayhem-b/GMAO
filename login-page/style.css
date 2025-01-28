@@ -18,12 +18,13 @@ body {
 }
 
 .login-box {
-    margin-top: 200px;
+    margin-top: 250px;
     display: flex;
     justify-content: center;
     flex-direction: column;
-    width: 480px;
-    padding: 30px;
+    width: 500px;
+    height: 480px;
+    padding: 20px;
     background: #fff;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
@@ -47,8 +48,8 @@ body {
 }
 
 .input-field:focus {
-    border: 1px solid #c45f5f;
-    box-shadow: 0 0 8px rgba(196, 95, 95, 0.3);
+    border: 1px solid #6d0b0b;
+    box-shadow: 0 0 8px rgba(224, 19, 19, 0.3);
 }
 
 .input-submit {
@@ -99,6 +100,5 @@ footer p {
     font-size: 15px;
     color: #555;
 }
-
 
 
