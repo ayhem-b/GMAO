@@ -1,17 +1,43 @@
+.flex-grow-1{
+    margin-left: 215px;
+}
+#navbar {
+    position: sticky;
+    top: 0px;
+    overflow: hidden;
+   background-color: #f8f9fa;
+   height: 70px;
+   margin-left: 0px;
+  }
+  #navbar h2 {
+    float: left;
+    display: block;
+    color: #111111;
+    text-align: center;
+    padding: 20px;
+    
+  }
+
 
         .sidebar {
             background-color: #f8f9fa;
             height: 100vh;
             padding: 20px;
             border-right: 1px solid #ddd;
+            position: fixed;
+            width: 215px;
+        
         }
         .sidebar a {
             color: #333;
             text-decoration: none;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+           
+            
         }
         .sidebar a:hover {
             color: #ff002b;
+            margin-left: 4px;
         }
         .statistic-card {
             border-radius: 8px;

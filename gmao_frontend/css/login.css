@@ -12,3 +12,8 @@ body {
 .btn-danger:hover {
     background-color: #a72424;
 }
+
+.form-control:focus {
+    border: 1px solid #c45f5f;
+    box-shadow: 0 0 8px rgba(196, 95, 95, 0.3);
+}
