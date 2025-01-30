@@ -32,3 +32,34 @@
             }, 200); // Adjust delay as needed
         });
     });
+
+    function addRow() {
+        const table = document.getElementById("spare-parts-table").getElementsByTagName('tbody')[0];
+        const newRow = table.insertRow();
+
+        const cell1 = newRow.insertCell(0);
+        const cell2 = newRow.insertCell(1);
+        const cell3 = newRow.insertCell(2);
+
+        cell1.innerHTML = '<input type="text" class="form-control">';
+        cell2.innerHTML = '<input type="number" class="form-control">';
+        cell3.innerHTML = '<button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">Supprimer</button>';
+    }
+
+    function removeRow(button) {
+        const row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    }
+
+    document.getElementById("received-date").addEventListener("change", validateDates);
+    document.getElementById("end-date").addEventListener("change", validateDates);
+
+    function validateDates() {
+        const receivedDate = document.getElementById("received-date").value;
+        const endDate = document.getElementById("end-date").value;
+
+        if (receivedDate && endDate && receivedDate > endDate) {
+            alert("La date 'Reçu le' ne peut pas être après 'Fin le'. Veuillez corriger.");
+            document.getElementById("received-date").value = "";
+        }
+    }
