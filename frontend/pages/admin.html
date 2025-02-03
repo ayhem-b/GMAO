@@ -11,7 +11,7 @@
 
 
     <!--local css-->
-    <link href="../css/home.css" rel="stylesheet">
+    <link href="../css/main.css" rel="stylesheet">
 
     <!-- Local Bootstrap CSS -->
     <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -46,29 +46,38 @@
             <div class="mb-4 text-center">
                 <img src="../img/lear_logo.png" alt="Lear Logo" class="img-fluid" style="max-height: 50px;">
             </div>
+        
+
             <nav class="nav flex-column">
-                <a href="acceuil.html" class="nav-link link "><i class="fas fa-home me-2"></i>Accueil</a>
-                <a href="CEcards.html" class="nav-link link"><i class="fas fa-users me-2"></i>Utilisateurs</a>
-                <a href="workorder.html" class="nav-link link"><i class="fas fa-clipboard-list me-2"></i>Ordre de
-                    travail</a>
-                <a href="his-interv.html" class="nav-link link"><i class="fas fa-tools me-2"></i>interventions</a>
+                <a href="admin.html" class="nav-link link "><i class="fas fa-home me-2"></i>Accueil</a>
+                <a href="workorder.html" class="nav-link link"><i class="fas fa-clipboard-list me-2"></i>Ordre detravail</a>
+                <a href="his-interv.html" class="nav-link link"><i class="fas fa-tools me-2"></i>Historique</a>
                 <a href="breakdown.html" class="nav-link link"><i class="fas fa-exclamation-triangle me-2"></i>Arrêt</a>
                 <a href="SPcards.html" class="nav-link link"><i class="fas fa-cogs me-2"></i>Machines</a>
                 <a href="EQcards.html" class="nav-link link"><i class="fas fa-box me-2"></i>Équipement</a>
                 <a href="department.html" class="nav-link link"><i class="fas fa-map-marker-alt me-2"></i>Zones</a>
+                <a href="CEcards.html" class="nav-link link"><i class="fas fa-users me-2"></i>Utilisateurs</a>
             </nav>
         </aside>
 
         <!-- Main Content -->
-        
-        <div class="flex-grow-1">
+
+        <div class="flex-grow-1"> 
+                      
             <!-- Header -->
             <header id="navbar">
+                
                 <div class="d-flex justify-content-between align-items-center">
+                    
                     <h2 class="m-0">Bienvenue</h2>
-                    <div class="d-flex align-items-center" style="margin: 15px;">
+                   
+                    <div class="d-flex align-items-center" style="margin-right: -1400px;">
                         <img src="../img/chef.png" alt="Profile" class="rounded-circle me-lg-1" style="width: 50px;">
                     </div>
+                    <button id="fullscreen-btn" class="btn  fullscreen-btn" ;>
+                        <i id="fullscreen-icon" class="fa fa-expand"></i>
+                    </button>
+                   
                 </div>
             </header>
 
@@ -129,15 +138,13 @@
 
         </div>
 
-        
+
+        <!-- Local Bootstrap Bundle JS -->
+<script src="../bootstrap/js/bootstrap.min.js"></script>
+<script src="../js/main.js"></script>
 </body>
 
-<!-- Local Bootstrap Bundle JS -->
-        <script src="../bootstrap/js/bootstrap.min.js"></script>
 
 
-
-
-<script src="../js/main.js"></script>
-
+  
 </html>
