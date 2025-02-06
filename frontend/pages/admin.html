@@ -82,7 +82,70 @@
             </header>
 
             <!-- Statistic Section -->
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card shadow-sm border-danger">
+                            <div class="card-header bg-danger text-white">Interventions par type de panne</div>
+                            <div class="card-body">
+                                <canvas id="interventionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="col-md-6">
+                        <div class="card shadow-sm border-danger">
+                            <div class="card-header bg-danger text-white">État des machines</div>
+                            <div class="card-body">
+                                <canvas id="machineStatusChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="card shadow-sm border-danger">
+                            <div class="card-header bg-danger text-white">Nombre d’interventions par mois</div>
+                            <div class="card-body">
+                                <canvas id="monthlyInterventionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="col-md-6">
+                        <div class="card shadow-sm border-danger">
+                            <div class="card-header bg-danger text-white">Répartition des interventions par technicien</div>
+                            <div class="card-body">
+                                <canvas id="technicianInterventionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="card shadow-sm border-danger">
+                            <div class="card-header bg-danger text-white">Durée moyenne des interventions</div>
+                            <div class="card-body">
+                                <canvas id="avgDurationChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="col-md-6">
+                        <div class="card shadow-sm border-danger">
+                            <div class="card-header bg-danger text-white">Demandes en attente vs résolues</div>
+                            <div class="card-body">
+                                <canvas id="pendingVsResolvedChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <section class="container my-4">
+                
+                
                 <div class="row g-4">
                     <div class="col-md-4">
                         <div class="statistic-card green">
@@ -142,6 +205,7 @@
         <!-- Local Bootstrap Bundle JS -->
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 <script src="../js/main.js"></script>
+<script src="../js/Chart.bundle.min.js"></script>
 </body>
 
 
