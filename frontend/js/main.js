@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
             labels: ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
             datasets: [{
                 label: "Interventions",
-                data: [5, 10, 8, 12, 15, 10, 14, 18, 16, 20, 22, 25],
+                data: [25, 10, 8, 12, 15, 30, 24, 18, 16, 20, 22, 25],
                 borderColor: "#dc3545",
                 fill: false
             }]
@@ -142,10 +142,10 @@ document.addEventListener("DOMContentLoaded", function () {
     new Chart(document.getElementById("technicianInterventionChart"), {
         type: "doughnut",
         data: {
-            labels: ["Jean", "Luc", "Marie", "Sophie"],
+            labels: ["Ayhem", "Samar", "Nour", "chiheb"],
             datasets: [{
-                data: [10, 15, 12, 8],
-                backgroundColor: ["#dc3545", "#28a745", "#ffc107", "#007bff"]
+                data: [30, 15, 12, 8],
+                backgroundColor: ["#dc3545", "#007bff", "#28a745", "#ffc107"]
             }]
         },
         options: { responsive: true }
@@ -158,12 +158,12 @@ document.addEventListener("DOMContentLoaded", function () {
             labels: ["Mécanique", "Électrique", "Logiciel", "Hydraulique", "Pneumatique"],
             datasets: [{
                 label: "Durée (min)",
-                data: [45, 30, 60, 40, 35],
+                data: [45, 35, 60, 40, 35],
                 backgroundColor: "rgba(220, 53, 69, 0.5)",
                 borderColor: "#dc3545"
             }]
         },
-        options: { responsive: true }
+        options: { responsive: true ,}
     });
 
     // 6️⃣ Demandes en attente vs résolues
@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function () {
             labels: ["En attente", "Résolues"],
             datasets: [{
                 label: "Demandes",
-                data: [20, 45],
+                data: [45,41],
                 backgroundColor: ["#ffc107", "#28a745"]
             }]
         },

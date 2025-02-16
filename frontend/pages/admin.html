@@ -46,11 +46,12 @@
             <div class="mb-4 text-center">
                 <img src="../img/lear_logo.png" alt="Lear Logo" class="img-fluid" style="max-height: 50px;">
             </div>
-        
+
 
             <nav class="nav flex-column">
                 <a href="admin.html" class="nav-link link "><i class="fas fa-home me-2"></i>Accueil</a>
-                <a href="workorder.html" class="nav-link link"><i class="fas fa-clipboard-list me-2"></i>Ordre detravail</a>
+                <a href="user.html" class="nav-link link"><i class="fas fa-clipboard-list me-2"></i>Ordre
+                    detravail</a>
                 <a href="his-interv.html" class="nav-link link"><i class="fas fa-tools me-2"></i>Historique</a>
                 <a href="breakdown.html" class="nav-link link"><i class="fas fa-exclamation-triangle me-2"></i>Arrêt</a>
                 <a href="SPcards.html" class="nav-link link"><i class="fas fa-cogs me-2"></i>Machines</a>
@@ -62,26 +63,26 @@
 
         <!-- Main Content -->
 
-        <div class="flex-grow-1"> 
-                      
+        <div class="flex-grow-1">
+
             <!-- Header -->
             <header id="navbar">
-                
+
                 <div class="d-flex justify-content-between align-items-center">
-                    
+
                     <h2 class="m-0">Bienvenue</h2>
-                   
+
                     <div class="d-flex align-items-center" style="margin-right: -1400px;">
                         <img src="../img/chef.png" alt="Profile" class="rounded-circle me-lg-1" style="width: 50px;">
                     </div>
                     <button id="fullscreen-btn" class="btn  fullscreen-btn" ;>
                         <i id="fullscreen-icon" class="fa fa-expand"></i>
                     </button>
-                   
+
                 </div>
             </header>
 
-            <!-- Statistic Section -->
+            <!-- Main Section -->
             <div class="container mt-4">
                 <div class="row">
                     <div class="col-md-6">
@@ -92,7 +93,7 @@
                             </div>
                         </div>
                     </div>
-            
+
                     <div class="col-md-6">
                         <div class="card shadow-sm border-danger">
                             <div class="card-header bg-danger text-white">État des machines</div>
@@ -102,7 +103,7 @@
                         </div>
                     </div>
                 </div>
-            
+
                 <div class="row mt-4">
                     <div class="col-md-6">
                         <div class="card shadow-sm border-danger">
@@ -112,17 +113,18 @@
                             </div>
                         </div>
                     </div>
-            
+
                     <div class="col-md-6">
                         <div class="card shadow-sm border-danger">
-                            <div class="card-header bg-danger text-white">Répartition des interventions par technicien</div>
+                            <div class="card-header bg-danger text-white">Répartition des interventions par technicien
+                            </div>
                             <div class="card-body">
                                 <canvas id="technicianInterventionChart"></canvas>
                             </div>
                         </div>
                     </div>
                 </div>
-            
+
                 <div class="row mt-4">
                     <div class="col-md-6">
                         <div class="card shadow-sm border-danger">
@@ -132,7 +134,7 @@
                             </div>
                         </div>
                     </div>
-            
+
                     <div class="col-md-6">
                         <div class="card shadow-sm border-danger">
                             <div class="card-header bg-danger text-white">Demandes en attente vs résolues</div>
@@ -143,9 +145,12 @@
                     </div>
                 </div>
             </div>
+
+
             <section class="container my-4">
-                
-                
+
+
+
                 <div class="row g-4">
                     <div class="col-md-4">
                         <div class="statistic-card green">
@@ -202,13 +207,13 @@
         </div>
 
 
-        <!-- Local Bootstrap Bundle JS -->
+</body>
+
+<!-- Local Bootstrap Bundle JS -->
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 <script src="../js/main.js"></script>
 <script src="../js/Chart.bundle.min.js"></script>
-</body>
 
 
 
-  
 </html>
