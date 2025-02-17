@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "api",
     "rest_framework",
     "corsheaders",
+    "login"
 ]
 
 MIDDLEWARE = [
@@ -96,8 +97,8 @@ WSGI_APPLICATION = 'gmao_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME':'Gmao_db',
-        'USER': 'admin',
+        'NAME':'Gmao',
+        'USER': 'postgres',
         'PASSWORD': '0000',
         'HOST': '127.0.0.1',
         'PORT': '5432',
