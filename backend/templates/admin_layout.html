@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{%{% load static %}%}
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,8 +7,9 @@
     <title>
         {%block title %}
         LEAR|CMMS
-        {%{% endblock %}%}
+        {% endblock %}
     </title>
+    <link rel="icon" type="image/png" href="{% static 'img/lear_mini_logo.png' %}">
     <!--local css-->
     <link href="{% static 'css/main.css' %}" rel="stylesheet">
 
@@ -41,12 +42,12 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="mb-4 text-center">
-                <img src="../img/lear_logo.png" alt="Lear Logo" class="img-fluid" style="max-height: 50px;">
+                <img src="{% static 'img/lear_logo.png' %}" alt="Lear Logo" class="img-fluid" style="max-height: 50px;">
             </div>
 
 
             <nav class="nav flex-column">
-                <a href="admin.html" class="nav-link link "><i class="fas fa-home me-2"></i>Accueil</a>
+                <a href="http://127.0.0.1:8000/admin/" class="nav-link link "><i class="fas fa-home me-2"></i>Accueil</a>
                 <a href="user.html" class="nav-link link"><i class="fas fa-clipboard-list me-2"></i>Ordre
                     detravail</a>
                 <a href="his-interv.html" class="nav-link link"><i class="fas fa-tools me-2"></i>Historique</a>
