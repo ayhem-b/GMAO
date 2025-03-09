@@ -21,9 +21,14 @@
                     
                 </div>
                 <div>
-                   
-                    <form  action="/login/" method="post">
+                    <form class="mb-3"  method ="post">
                         {% csrf_token %}
+                       
+                    {% if form.errors  %}
+                        <div class="alert alert-danger">
+                         <p> {{form.non_field_errors}}</p>  
+                        </div>
+                    {% endif %}
                         <div class="form-control">
                             {{ form.username.label_tag }}
                             {{ form.username }}
@@ -32,6 +37,7 @@
                             {{ form.password.label_tag }}
                             {{ form.password }}
                         </div>
+                     
                         <button class="btn btn-danger w-100" type="submit">Login</button>
                     </form>
                 </div>

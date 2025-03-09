@@ -7,7 +7,12 @@ body {
     height: 300px;
     width: 400px; 
 }
-
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    border-radius: 20px;
+    margin-top: 10px;
+}
 
 .btn-danger:hover {
     background-color: #a72424;
@@ -17,3 +22,10 @@ body {
     border-radius: 20px;
     margin-top: 10px;
 }
+.alert {
+    display: none; /* Hidden by default */
+}
+
+.alert:has(p) {
+    display: block; /* Show if there's content inside */
+}     
