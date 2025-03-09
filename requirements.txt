@@ -1,6 +1,6 @@
 asgiref
 Django
-tzdata
-sqlparse
 psycopg2-binary
+sqlparse
+tzdata
 

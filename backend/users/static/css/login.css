@@ -1,0 +1,19 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.card {
+    border-radius: 20px;
+    height: 300px;
+    width: 400px; 
+}
+
+
+.btn-danger:hover {
+    background-color: #a72424;
+}
+
+.form-control {
+    border-radius: 20px;
+    margin-top: 10px;
+}
