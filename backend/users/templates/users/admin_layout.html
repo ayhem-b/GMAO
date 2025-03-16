@@ -69,9 +69,16 @@
                     <h2 class="m-0">Bienvenue</h2>
             
                     <div class="d-flex align-items-center">
-                        <!-- Profile Image -->
+                        <form class="logout" action="{% url 'users:logout'%}" method="post">
+                            {% csrf_token %}
+                            <button aria-label="logout" title="logout"><img src="{% static 'img/chef.png' %}" alt="Profile" 
+                                class="rounded-circle me-2 img-fluid" style="width: 50px; min-width: 40px;"></button>
+                        </form>
+                        
+                        
+                        <!-- Profile Image
                         <img src="{% static 'img/chef.png' %}" alt="Profile" 
-                             class="rounded-circle me-2 img-fluid" style="width: 50px; min-width: 40px;">
+                             class="rounded-circle me-2 img-fluid" style="width: 50px; min-width: 40px;"> -->
             
                         <!-- Fullscreen Button -->
                         <button id="fullscreen-btn" class="btn fullscreen-btn">
