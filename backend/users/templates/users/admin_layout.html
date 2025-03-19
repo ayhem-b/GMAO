@@ -63,28 +63,22 @@
 
         <div class="flex-grow-1">
 
-            <!-- Header -->
-            <header id="navbar">
-                <div class="d-flex justify-content-between align-items-center px-3">
-                    <h2 class="m-0">Bienvenue</h2>
+            <header class="d-flex align-items-center justify-content-between px-3 py-2">
+                <h2 class="m-0">Bienvenue</h2>
             
-                    <div class="d-flex align-items-center">
-                        <form class="logout" action="{% url 'users:logout'%}" method="post">
-                            {% csrf_token %}
-                            <button aria-label="logout" title="logout"><img src="{% static 'img/chef.png' %}" alt="Profile" 
-                                class="rounded-circle me-2 img-fluid" style="width: 50px; min-width: 40px;"></button>
-                        </form>
-                        
-                        
-                        <!-- Profile Image
-                        <img src="{% static 'img/chef.png' %}" alt="Profile" 
-                             class="rounded-circle me-2 img-fluid" style="width: 50px; min-width: 40px;"> -->
-            
-                        <!-- Fullscreen Button -->
-                        <button id="fullscreen-btn" class="btn fullscreen-btn">
-                            <i id="fullscreen-icon" class="fa fa-expand"></i>
+                <div class="d-flex align-items-center">
+                    <form class="logout me-3" action="{% url 'users:logout'%}" method="post">
+                        {% csrf_token %}
+                        <button aria-label="logout" title="logout" class="border-0 bg-transparent p-0">
+                            <img src="{% static 'img/chef.png' %}" alt="Profile" 
+                                class="rounded-circle img-fluid" style="width: 50px; min-width: 40px;">
                         </button>
-                    </div>
+                    </form>
+            
+                    <!-- Fullscreen Button -->
+                    <button id="fullscreen-btn" class="btn">
+                        <i id="fullscreen-icon" class="fa fa-expand"></i>
+                    </button>
                 </div>
             </header>
             

@@ -6,6 +6,9 @@ from django.contrib.auth import login as auth_login, logout
 def admin(request):
     return render(request, "users/admin.html")
 
+def users_view(request):
+    return render(request,"users/users.html")
+
 def register(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)
@@ -25,7 +28,7 @@ def user_login(request):  # I Renamed the function to avoid conflict with built-
             if user.is_superuser:
                 return redirect("users:admin")
             else:
-                return redirect("users:register")         
+                return redirect("users:users")         
     else:
         form = AuthenticationForm()
     return render(request, "users/login.html", {"form": form})

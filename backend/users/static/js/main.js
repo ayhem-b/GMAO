@@ -1,13 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // ✅ Sidebar Link Highlighting
-    const links = document.querySelectorAll('.sidebar a');
-    const currentPage = window.location.pathname.split('/').pop();
-
-    links.forEach(link => {
-        if (link.getAttribute('href') === currentPage) {
-            link.classList.add('active');
-        }
-    });
+        const links = document.querySelectorAll('.sidebar .nav-link');
+        const currentPath = window.location.pathname; // Get full path
+    
+        links.forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.classList.add('active');
+            }
+        });
+   
 
     // ✅ Loader Animation
     const pageLinks = document.querySelectorAll('.link');
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-
+// charts js
 
 document.addEventListener("DOMContentLoaded", function () {
     // 1️⃣ Interventions par type de panne

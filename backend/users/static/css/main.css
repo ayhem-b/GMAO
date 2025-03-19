@@ -105,7 +105,7 @@
 }
 
 /* Emphasize the active page */
-.sidebar a.active {
+.sidebar .nav-link.active{
     color: white !important;
     font-weight: bold;
     font-size: 1.1rem;
