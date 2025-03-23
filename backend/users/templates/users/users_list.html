@@ -1,0 +1,119 @@
+{% extends 'users/admin_layout.html' %}
+
+{% block title %}Utilisateurs{% endblock %}
+
+{% block main %}
+<div class="container mt-4">
+    {% if messages %}
+        <div class="container">
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <h2 class="text-danger text-center">User Management</h2>
+    
+    <!-- Search & Add User Button -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <input type="text" id="search" class="form-control" placeholder="Search users...">
+        </div>
+        <div class="col-md-6 text-end">
+            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#addUserModal">Add User</button>
+        </div>
+    </div>
+
+    <!-- User Table -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-striped">
+            <thead class="table-danger">
+                <tr>
+                    <th>#</th>
+                    <th>Name <button class="btn btn-sm btn-light sort" data-column="name">▲</button></th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="userTable">
+                {% for user in users %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.role }}</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger edit-user" data-id="{{ user.id }}">Edit</button>
+                        <button class="btn btn-sm btn-dark delete-user" data-id="{{ user.id }}">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add User Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Add New User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addUserForm" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input type="text" class="form-control" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Role</label>
+                        <select class="form-select" name="role">
+                            <option value="Admin">Admin</option>
+                            <option value="User">User</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-danger">Add User</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function(){
+    // Search Functionality
+    $("#search").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#userTable tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+        });
+    });
+
+    // Sorting
+    $(".sort").click(function() {
+        var table = $("table tbody");
+        var rows = table.find("tr").toArray().sort((a, b) => {
+            var textA = $(a).find("td:nth-child(2)").text();
+            var textB = $(b).find("td:nth-child(2)").text();
+            return textA.localeCompare(textB);
+        });
+        table.append(rows);
+    });
+});
+</script>
+{% endblock %}
