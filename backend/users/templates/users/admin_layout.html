@@ -17,6 +17,7 @@
     <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
     <!-- Font Awesome Icons -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <!-- Local Bootstrap Bundle JS -->
 
@@ -55,7 +56,7 @@
                 <a href="SPcards.html" class="nav-link link"><i class="fas fa-cogs me-2"></i>Machines</a>
                 <a href="EQcards.html" class="nav-link link"><i class="fas fa-box me-2"></i>Équipement</a>
                 <a href="department.html" class="nav-link link"><i class="fas fa-map-marker-alt me-2"></i>Zones</a>
-                <a href="CEcards.html" class="nav-link link"><i class="fas fa-users me-2"></i>Utilisateurs</a>
+                <a href="{% url 'users:users_list'  %}" class="nav-link link"><i class="fas fa-users me-2"></i>Utilisateurs</a>
             </nav>
         </aside>
 

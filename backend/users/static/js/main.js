@@ -91,6 +91,80 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+$(document).ready(function(){
+    // Search Functionality
+    $("#search").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#userTable tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+        });
+    });
+
+    // Sorting Functionality
+    $(".sort").click(function() {
+        var table = $("table tbody");
+        var rows = table.find("tr").toArray().sort((a, b) => {
+            var textA = $(a).find("td:nth-child(2)").text();
+            var textB = $(b).find("td:nth-child(2)").text();
+            return textA.localeCompare(textB);
+        });
+        table.append(rows);
+    });
+
+    // Edit User Modal Setup
+    $(".edit-user").click(function() {
+        let userId = $(this).data("id");
+        let username = $(this).data("username");
+        let email = $(this).data("email");
+        let role = $(this).data("role");
+
+        $("#editUserId").val(userId);
+        $("#editUsername").val(username);
+        $("#editEmail").val(email);
+        $("#editRole").val(role);
+    });
+
+    // Edit User Form Submission
+    $("#editUserForm").submit(function(e) {
+        e.preventDefault();
+        let formData = $(this).serialize();
+
+        $.ajax({
+            type: "POST",
+            url: "/edit-user/",
+            data: formData,
+            success: function(response) {
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                alert("Failed to update user.");
+            }
+        });
+    });
+
+    // Delete User
+    $(".delete-user").click(function() {
+        let userId = $(this).data("id");
+        if (confirm("Are you sure you want to delete this user?")) {
+            $.ajax({
+                type: "POST",
+                url: "/delete-user/",
+                data: {
+                    "user_id": userId,
+                    "csrfmiddlewaretoken": $("input[name=csrfmiddlewaretoken]").val()
+                },
+                success: function(response) {
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    alert("Failed to delete user.");
+                }
+            });
+        }
+    });
+});
+
+
 // charts js
 
 document.addEventListener("DOMContentLoaded", function () {
