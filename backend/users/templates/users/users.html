@@ -1,4 +1,4 @@
- {% load static %} 
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,8 +22,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <!-- Local Bootstrap Bundle JS -->
 
-    <script src="{% static 'js/Chart.bundle.min.js' %} " defer></script>   
-    
+    <script src="{% static 'js/Chart.bundle.min.js' %} " defer></script>
+
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}" defer></script>
     <script src="{% static 'js/main.js' %}" defer></script>
 
@@ -44,11 +44,12 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="mb-4 text-center">
-                <img src="{% static '/img/lear_logo.png' %}" alt="Lear Logo" class="img-fluid" style="max-height: 50px;">
+                <img src="{% static '/img/lear_logo.png' %}" alt="Lear Logo" class="img-fluid"
+                    style="max-height: 50px;">
             </div>
             <nav class="nav">
                 <a href="/users/" class="nav-link link"><i class="fas fa-tools me-2"></i>Intervention</a>
-              
+
                 <a href="workorder.html" class="nav-link link"><i class="fas fa-clipboard-list me-2"></i>Ordre de
                     travail</a>
             </nav>
@@ -58,16 +59,16 @@
             <!-- Header -->
             <header class="d-flex align-items-center justify-content-between px-3 py-2">
                 <h2 class="m-0">Bienvenue</h2>
-            
+
                 <div class="d-flex align-items-center">
                     <form class="logout me-3" action="{% url 'users:logout'%}" method="post">
                         {% csrf_token %}
                         <button aria-label="logout" title="logout" class="border-0 bg-transparent p-0">
-                            <img src="{% static 'img/technicien.png' %}" alt="Profile" 
-                                class="rounded-circle img-fluid" style="width: 50px; min-width: 40px;">
+                            <img src="{% static 'img/technicien.png' %}" alt="Profile" class="rounded-circle img-fluid"
+                                style="width: 50px; min-width: 40px;">
                         </button>
                     </form>
-            
+
                     <!-- Fullscreen Button -->
                     <button id="fullscreen-btn" class="btn">
                         <i id="fullscreen-icon" class="fa fa-expand"></i>
