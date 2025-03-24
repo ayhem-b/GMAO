@@ -51,7 +51,8 @@ def admin(request):
     return render(request, "users/admin.html")
 
 def users_view(request):
-    return render(request,"users/users.html")
+    user = request.user
+    return render(request,"users/users.html",{'user': user})
 
 def register(request):
     if request.method == "POST":

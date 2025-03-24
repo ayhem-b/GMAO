@@ -77,189 +77,183 @@
             </header>
             <!-- Statistic Section -->
             <section class="container my-4">
-
-                <div class="container my-4">
-                    <h2 class="text-center">Intervention</h2>
-
-                    <!-- Technician Info Section -->
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="technician-name" class="form-label">Nom & Prénom Technicien:</label>
-                            <input type="text" class="form-control" id="technician-name">
+                <form action="">
+                    <div class="container my-4">
+                        <h2 class="text-center">Intervention</h2>
+    
+                        <!-- Technician Info Section -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="technician-name" class="form-label">Nom & Prénom Technicien:</label>
+                                <input type="text" class="form-control" id="technician-name" name="technician_name" value="{{ user }}" readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="received-date" class="form-label">Reçu le:</label>
+                                <input type="datetime-local" class="form-control" id="received-date">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="end-date" class="form-label">Fin le:</label>
+                                <input type="datetime-local" class="form-control" id="end-date">
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            <label for="received-date" class="form-label">Reçu le:</label>
-                            <input type="datetime-local" class="form-control" id="received-date">
+    
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="matricule" class="form-label">Matricule:</label>
+                                <input type="text" class="form-control" id="matricule">
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            <label for="end-date" class="form-label">Fin le:</label>
-                            <input type="datetime-local" class="form-control" id="end-date">
+    
+                        <!-- Maintenance Type Section -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <h5>Catégorie de Panne</h5>
+                                <ul class="list-unstyled">
+                                    <li><input type="radio" name="categorie-panne" id="mnp"> <label for="mnp">Maint Non
+                                            Planifié (MNP)</label></li>
+                                    <li><input type="radio" name="categorie-panne" id="mcp"> <label for="mcp">Maint Curatif
+                                            Planifié (MCP)</label></li>
+                                    <li><input type="radio" name="categorie-panne" id="aut"> <label for="aut">Trav Divers ou
+                                            Amélioration (AUT)</label></li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-3">
-                            <label for="matricule" class="form-label">Matricule:</label>
-                            <input type="text" class="form-control" id="matricule">
+    
+                        <!-- Fault Codes Section -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5>Code Défaut 1 (What)</h5>
+                                <ul class="list-unstyled">
+                                    <li><input type="checkbox" id="defaut1-mecanique"> <label
+                                            for="defaut1-mecanique">Mécanique</label></li>
+                                    <li><input type="checkbox" id="defaut1-electrique"> <label
+                                            for="defaut1-electrique">Électrique</label></li>
+                                    <li><input type="checkbox" id="defaut1-pneumatique"> <label
+                                            for="defaut1-pneumatique">Pneumatique</label></li>
+                                    <li><input type="checkbox" id="defaut1-hydraulique"> <label
+                                            for="defaut1-hydraulique">Hydraulique</label></li>
+                                    <li><input type="checkbox" id="defaut1-maintenance"> <label
+                                            for="defaut1-maintenance">Maintenance</label></li>
+                                    <li><input type="checkbox" id="defaut1-logiciel"> <label
+                                            for="defaut1-logiciel">Logiciel</label></li>
+                                    <li><input type="checkbox" id="defaut1-inspection"> <label
+                                            for="defaut1-inspection">Inspection</label></li>
+                                </ul>
+                            </div>
+    
+                            <div class="col-md-4">
+                                <h5>Code Défaut 2 (Why)</h5>
+                                <ul class="list-unstyled">
+                                    <li><input type="checkbox" id="defaut2-cassure"> <label
+                                            for="defaut2-cassure">Cassure</label></li>
+                                    <li><input type="checkbox" id="defaut2-usure"> <label for="defaut2-usure">Usure</label>
+                                    </li>
+                                    <li><input type="checkbox" id="defaut2-salete"> <label
+                                            for="defaut2-salete">Saleté</label></li>
+                                    <li><input type="checkbox" id="defaut2-blocage"> <label
+                                            for="defaut2-blocage">Blocage</label></li>
+                                    <li><input type="checkbox" id="defaut2-desserrage"> <label
+                                            for="defaut2-desserrage">Desserrage</label></li>
+                                    <li><input type="checkbox" id="defaut2-surcharge"> <label
+                                            for="defaut2-surcharge">Surcharge</label></li>
+                                    <li><input type="checkbox" id="defaut2-mauvaise-utilisation"> <label
+                                            for="defaut2-mauvaise-utilisation">Mauvaise utilisation</label></li>
+                                    <li><input type="checkbox" id="defaut2-mauvais-reglage"> <label
+                                            for="defaut2-mauvais-reglage">Mauvais réglage</label></li>
+                                    <li><input type="checkbox" id="defaut2-alimentation-electrique"> <label
+                                            for="defaut2-alimentation-electrique">Alimentation électrique</label></li>
+                                    <li><input type="checkbox" id="defaut2-court-circuit"> <label
+                                            for="defaut2-court-circuit">Court-circuit</label></li>
+                                </ul>
+                            </div>
+    
+                            <div class="col-md-4">
+                                <h5>Code Défaut 3 (Where)</h5>
+                                <ul class="list-unstyled">
+                                    <li><input type="checkbox" id="defaut3-sewing"> <label
+                                            for="defaut3-sewing">Sewing</label></li>
+                                    <li><input type="checkbox" id="defaut3-lineup"> <label for="defaut3-lineup">Line
+                                            UP</label></li>
+                                    <li><input type="checkbox" id="defaut3-punch"> <label for="defaut3-punch">Punch</label>
+                                    </li>
+                                    <li><input type="checkbox" id="defaut3-fawi"> <label for="defaut3-fawi">Fawi</label>
+                                    </li>
+                                    <li><input type="checkbox" id="defaut3-pc"> <label for="defaut3-pc">PC</label></li>
+                                    <li><input type="checkbox" id="defaut3-amada"> <label for="defaut3-amada">Amada</label>
+                                    </li>
+                                    <li><input type="checkbox" id="defaut3-ondule"> <label
+                                            for="defaut3-ondule">Ondule</label></li>
+                                    <li><input type="checkbox" id="defaut3-imprimante"> <label
+                                            for="defaut3-imprimante">Imprimante</label></li>
+                                    <li><input type="checkbox" id="defaut3-lecteur-code-barre"> <label
+                                            for="defaut3-lecteur-code-barre">Lecteur Code à Barre</label></li>
+                                    <li><input type="checkbox" id="defaut3-lampe-eclairage"> <label
+                                            for="defaut3-lampe-eclairage">Lampe éclairage</label></li>
+                                    <li><input type="checkbox" id="defaut3-camera"> <label
+                                            for="defaut3-camera">Caméra</label></li>
+                                    <li><input type="checkbox" id="defaut3-presse-sertissage"> <label
+                                            for="defaut3-presse-sertissage">Presse sertissage</label></li>
+                                    <li><input type="checkbox" id="defaut3-armoire-electrique"> <label
+                                            for="defaut3-armoire-electrique">Armoire électrique</label></li>
+                                    <li><input type="checkbox" id="defaut3-bloc-electrovanne"> <label
+                                            for="defaut3-bloc-electrovanne">Bloc électrovanne</label></li>
+                                    <li><input type="checkbox" id="defaut3-systeme-guidage"> <label
+                                            for="defaut3-systeme-guidage">Système de guidage</label></li>
+                                    <li><input type="checkbox" id="defaut3-tete-sewing"> <label
+                                            for="defaut3-tete-sewing">Tête Sewing</label></li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            <label for="visa" class="form-label">Visa:</label>
-                            <input type="text" class="form-control" id="visa">
+    
+                        <!-- Spare Parts Section -->
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <h5>Pièces de rechange</h5>
+                                <table class="table border-table" id="spare-parts-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Référence</th>
+                                            <th>Quantité</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><input type="text" class="form-control"></td>
+                                            <td><input type="number" class="form-control"></td>
+                                            <td><button type="button" class="btn btn-danger btn-sm"
+                                                    onclick="removeRow(this)">Supprimer</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="addRow()">Ajouter une
+                                    pièce</button>
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            <label for="quality-approval" class="form-label">Approbation Qualité:</label>
-                            <input type="text" class="form-control" id="quality-approval">
+    
+                        <!-- Comment Section -->
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <h5>Commentaires de l'intervenant</h5>
+                                <textarea class="form-control" rows="4"
+                                    placeholder="Ajoutez vos observations ici..."></textarea>
+                            </div>
                         </div>
-                    </div>
-
-                    <!-- Maintenance Type Section -->
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <h5>Catégorie de Panne</h5>
-                            <ul class="list-unstyled">
-                                <li><input type="radio" name="categorie-panne" id="mnp"> <label for="mnp">Maint Non
-                                        Planifié (MNP)</label></li>
-                                <li><input type="radio" name="categorie-panne" id="mcp"> <label for="mcp">Maint Curatif
-                                        Planifié (MCP)</label></li>
-                                <li><input type="radio" name="categorie-panne" id="aut"> <label for="aut">Trav Divers ou
-                                        Amélioration (AUT)</label></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Fault Codes Section -->
-                    <div class="row">
-                        <div class="col-md-4">
-                            <h5>Code Défaut 1 (What)</h5>
-                            <ul class="list-unstyled">
-                                <li><input type="checkbox" id="defaut1-mecanique"> <label
-                                        for="defaut1-mecanique">Mécanique</label></li>
-                                <li><input type="checkbox" id="defaut1-electrique"> <label
-                                        for="defaut1-electrique">Électrique</label></li>
-                                <li><input type="checkbox" id="defaut1-pneumatique"> <label
-                                        for="defaut1-pneumatique">Pneumatique</label></li>
-                                <li><input type="checkbox" id="defaut1-hydraulique"> <label
-                                        for="defaut1-hydraulique">Hydraulique</label></li>
-                                <li><input type="checkbox" id="defaut1-maintenance"> <label
-                                        for="defaut1-maintenance">Maintenance</label></li>
-                                <li><input type="checkbox" id="defaut1-logiciel"> <label
-                                        for="defaut1-logiciel">Logiciel</label></li>
-                                <li><input type="checkbox" id="defaut1-inspection"> <label
-                                        for="defaut1-inspection">Inspection</label></li>
-                            </ul>
-                        </div>
-
-                        <div class="col-md-4">
-                            <h5>Code Défaut 2 (Why)</h5>
-                            <ul class="list-unstyled">
-                                <li><input type="checkbox" id="defaut2-cassure"> <label
-                                        for="defaut2-cassure">Cassure</label></li>
-                                <li><input type="checkbox" id="defaut2-usure"> <label for="defaut2-usure">Usure</label>
-                                </li>
-                                <li><input type="checkbox" id="defaut2-salete"> <label
-                                        for="defaut2-salete">Saleté</label></li>
-                                <li><input type="checkbox" id="defaut2-blocage"> <label
-                                        for="defaut2-blocage">Blocage</label></li>
-                                <li><input type="checkbox" id="defaut2-desserrage"> <label
-                                        for="defaut2-desserrage">Desserrage</label></li>
-                                <li><input type="checkbox" id="defaut2-surcharge"> <label
-                                        for="defaut2-surcharge">Surcharge</label></li>
-                                <li><input type="checkbox" id="defaut2-mauvaise-utilisation"> <label
-                                        for="defaut2-mauvaise-utilisation">Mauvaise utilisation</label></li>
-                                <li><input type="checkbox" id="defaut2-mauvais-reglage"> <label
-                                        for="defaut2-mauvais-reglage">Mauvais réglage</label></li>
-                                <li><input type="checkbox" id="defaut2-alimentation-electrique"> <label
-                                        for="defaut2-alimentation-electrique">Alimentation électrique</label></li>
-                                <li><input type="checkbox" id="defaut2-court-circuit"> <label
-                                        for="defaut2-court-circuit">Court-circuit</label></li>
-                            </ul>
-                        </div>
-
-                        <div class="col-md-4">
-                            <h5>Code Défaut 3 (Where)</h5>
-                            <ul class="list-unstyled">
-                                <li><input type="checkbox" id="defaut3-sewing"> <label
-                                        for="defaut3-sewing">Sewing</label></li>
-                                <li><input type="checkbox" id="defaut3-lineup"> <label for="defaut3-lineup">Line
-                                        UP</label></li>
-                                <li><input type="checkbox" id="defaut3-punch"> <label for="defaut3-punch">Punch</label>
-                                </li>
-                                <li><input type="checkbox" id="defaut3-fawi"> <label for="defaut3-fawi">Fawi</label>
-                                </li>
-                                <li><input type="checkbox" id="defaut3-pc"> <label for="defaut3-pc">PC</label></li>
-                                <li><input type="checkbox" id="defaut3-amada"> <label for="defaut3-amada">Amada</label>
-                                </li>
-                                <li><input type="checkbox" id="defaut3-ondule"> <label
-                                        for="defaut3-ondule">Ondule</label></li>
-                                <li><input type="checkbox" id="defaut3-imprimante"> <label
-                                        for="defaut3-imprimante">Imprimante</label></li>
-                                <li><input type="checkbox" id="defaut3-lecteur-code-barre"> <label
-                                        for="defaut3-lecteur-code-barre">Lecteur Code à Barre</label></li>
-                                <li><input type="checkbox" id="defaut3-lampe-eclairage"> <label
-                                        for="defaut3-lampe-eclairage">Lampe éclairage</label></li>
-                                <li><input type="checkbox" id="defaut3-camera"> <label
-                                        for="defaut3-camera">Caméra</label></li>
-                                <li><input type="checkbox" id="defaut3-presse-sertissage"> <label
-                                        for="defaut3-presse-sertissage">Presse sertissage</label></li>
-                                <li><input type="checkbox" id="defaut3-armoire-electrique"> <label
-                                        for="defaut3-armoire-electrique">Armoire électrique</label></li>
-                                <li><input type="checkbox" id="defaut3-bloc-electrovanne"> <label
-                                        for="defaut3-bloc-electrovanne">Bloc électrovanne</label></li>
-                                <li><input type="checkbox" id="defaut3-systeme-guidage"> <label
-                                        for="defaut3-systeme-guidage">Système de guidage</label></li>
-                                <li><input type="checkbox" id="defaut3-tete-sewing"> <label
-                                        for="defaut3-tete-sewing">Tête Sewing</label></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Spare Parts Section -->
-                    <div class="row mt-4">
-                        <div class="col-md-12">
-                            <h5>Pièces de rechange</h5>
-                            <table class="table border-table" id="spare-parts-table">
-                                <thead>
-                                    <tr>
-                                        <th>Référence</th>
-                                        <th>Quantité</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><button type="button" class="btn btn-danger btn-sm"
-                                                onclick="removeRow(this)">Supprimer</button></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <button type="button" class="btn btn-danger btn-sm" onclick="addRow()">Ajouter une
-                                pièce</button>
-                        </div>
-                    </div>
-
-                    <!-- Comment Section -->
-                    <div class="row mt-4">
-                        <div class="col-md-12">
-                            <h5>Commentaires de l'intervenant</h5>
-                            <textarea class="form-control" rows="4"
-                                placeholder="Ajoutez vos observations ici..."></textarea>
-                        </div>
-                    </div>
-
-                    <!-- Approval Section -->
-                    <div class="row mt-4">
-                        <div class="col-md-6 text-center">
-                            <h5>Visa Maintenance</h5>
-                            <input type="text" class="form-control" placeholder="Signature">
-                        </div>
-                        <div class="col-md-6 text-center">
-                            <h5>Visa Production</h5>
-                            <input type="text" class="form-control" placeholder="Signature">
+    
+                        <!-- Approval Section -->
+                        <div class="row mt-4">
+                            <div class="col-md-6 text-center">
+                                <h5>Visa Maintenance</h5>
+                                <input type="text" class="form-control" placeholder="Signature">
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <h5>Visa Production</h5>
+                                <input type="text" class="form-control" placeholder="Signature">
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
+                
             </section>
 
         </div>
