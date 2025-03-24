@@ -46,6 +46,7 @@ def user_list(request):
     return render(request, 'users/user_list.html', {'users': users})
 
 # Create your views here.
+@login_required
 def admin(request):
     return render(request, "users/admin.html")
 
