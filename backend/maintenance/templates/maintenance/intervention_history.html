@@ -1,0 +1,41 @@
+{% extends 'users/admin_layout.html' %}
+
+{% block main %}
+<div class="container mt-4">
+    <h2 class="text-center">Historique des Interventions</h2>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Date</th>
+                <th>Technicien</th>
+                <th>Matricule</th>
+                <th>Catégorie</th>
+                <th>Défaut (What)</th>
+                <th>Défaut (Why)</th>
+                <th>Défaut (Where)</th>
+                <th>Commentaires</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for intervention in interventions %}
+            <tr>
+                <td>{{ intervention.received_date|date:"d/m/Y H:i" }}</td>
+                <td>{{ intervention.technician.first_name }} {{ intervention.technician.last_name }}</td>
+                <td>{{ intervention.username }}</td>
+                <td>{{ intervention.get_fault_category_display }}</td>
+                <td>{{ intervention.fault_what|join:", " }}</td>
+                <td>{{ intervention.fault_why|join:", " }}</td>
+                <td>{{ intervention.fault_where|join:", " }}</td>
+                <td>{{ intervention.comments }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8" class="text-center">Aucune intervention enregistrée.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}

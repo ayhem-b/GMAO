@@ -6,6 +6,8 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from maintenance.models import Intervention
+from maintenance.forms import InterventionForm
 
 
 @login_required
@@ -52,7 +54,16 @@ def admin(request):
 
 def users_view(request):
     user = request.user
-    return render(request,"users/users.html",{'user': user})
+    interventions = Intervention.objects.all().order_by("-received_date")
+    if request.method == "POST":
+        print(request.POST)
+        form = InterventionForm(request.POST)
+        if form.is_valid():
+            form.save()  # Save data to the table
+            return redirect("users:login")
+    else:
+        form = InterventionForm
+    return render(request,"users/users.html",{'user': user,"form": form, "interventions": interventions})
 
 def register(request):
     if request.method == "POST":

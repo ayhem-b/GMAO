@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "users",
+    "maintenance",
 ]
 
 MIDDLEWARE = [
@@ -88,6 +89,7 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
 
 
 # Password validation

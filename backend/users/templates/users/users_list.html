@@ -5,18 +5,19 @@
 {% block main %}
 <div class="container mt-4">
     {% if messages %}
-        <div class="container">
-            {% for message in messages %}
-                <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            {% endfor %}
+    <div class="container">
+        {% for message in messages %}
+        <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %} alert-dismissible fade show"
+            role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
+        {% endfor %}
+    </div>
     {% endif %}
 
     <h2 class="text-danger text-center">User Management</h2>
-    
+
     <!-- Search & Add User Button -->
     <div class="row mb-3">
         <div class="col-md-6">
@@ -33,7 +34,8 @@
             <thead class="table-danger">
                 <tr>
                     <th>#</th>
-                    <th>Name <button class="btn btn-sm btn-light sort" data-column="name">▲</button></th>
+                    <th>Name<button class="btn btn-sm btn-light sort" data-column="name">▲</button></th>
+                    <th>Matricule <button class="btn btn-sm btn-light sort" data-column="name">▲</button></th>
                     <th>Email</th>
                     <th>Role</th>
                     <th>Actions</th>
@@ -43,14 +45,18 @@
                 {% for user in users %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
+                    <td>{{ user.first_name}}</td>
                     <td>{{ user.username }}</td>
                     <td>{{ user.email }}</td>
-                    <td>{{ user.role }}</td>
+                    <td>{% if user.is_superuser %}Admin{% else %}User{% endif %}</td>
                     <td>
-                        <button class="btn btn-sm btn-danger edit-user" data-id="{{ user.id }}" data-username="{{ user.username }}" data-email="{{ user.email }}" data-role="{{ user.role }}" data-bs-toggle="modal" data-bs-target="#editUserModal">Edit</button>
+                        <button class="btn btn-sm btn-danger edit-user" data-id="{{ user.id }}"
+                            data-username="{{ user.username }}" data-email="{{ user.email }}"
+                            data-role="{{ user.role }}" data-bs-toggle="modal"
+                            data-bs-target="#editUserModal">Edit</button>
                         <button class="btn btn-sm btn-dark delete-user" data-id="{{ user.id }}">Delete</button>
                     </td>
-                    
+
                 </tr>
                 {% endfor %}
             </tbody>
@@ -131,25 +137,25 @@
 </div>
 
 <script>
-$(document).ready(function(){
-    // Search Functionality
-    $("#search").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $("#userTable tr").filter(function() {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+    $(document).ready(function () {
+        // Search Functionality
+        $("#search").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#userTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
         });
-    });
 
-    // Sorting
-    $(".sort").click(function() {
-        var table = $("table tbody");
-        var rows = table.find("tr").toArray().sort((a, b) => {
-            var textA = $(a).find("td:nth-child(2)").text();
-            var textB = $(b).find("td:nth-child(2)").text();
-            return textA.localeCompare(textB);
+        // Sorting
+        $(".sort").click(function () {
+            var table = $("table tbody");
+            var rows = table.find("tr").toArray().sort((a, b) => {
+                var textA = $(a).find("td:nth-child(2)").text();
+                var textB = $(b).find("td:nth-child(2)").text();
+                return textA.localeCompare(textB);
+            });
+            table.append(rows);
         });
-        table.append(rows);
     });
-});
 </script>
 {% endblock %}
