@@ -81,18 +81,20 @@
                     {% csrf_token %}
                     <div class="container my-4">
                         <h2 class="text-center">Intervention</h2>
-                
+
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="technician-name" class="form-label">Nom & Prénom Technicien:</label>
-                                <input type="text" class="form-control" id="technician-name" value="{{ user.first_name }} {{ user.last_name }}" readonly>
+                                <input type="text" class="form-control" id="technician"
+                                    value="{{ user.first_name }} {{ user.last_name }}" readonly>
                             </div>
                             <div class="col-md-3">
                                 <label for="matricule" class="form-label">Matricule:</label>
-                                <input type="text" class="form-control" id="matricule" value="{{ user.username }}" readonly>
+                                <input type="text" class="form-control" id="technicien" value="{{ user.username }}"
+                                    readonly>
                             </div>
                         </div>
-                
+
                         <div class="row mb-3">
                             <div class="col-md-3">
                                 <label for="received-date" class="form-label">Reçu le:</label>
@@ -103,7 +105,7 @@
                                 <input type="datetime-local" class="form-control" name="end_date">
                             </div>
                         </div>
-                
+
                         <div class="mb-3">
                             <label class="form-label">Catégorie de Panne:</label>
                             <select name="fault_category" class="form-control" required>
@@ -112,7 +114,7 @@
                                 <option value="AUT">Travaux Divers ou Amélioration</option>
                             </select>
                         </div>
-                
+
                         <div class="mb-3">
                             <label class="form-label">Code Défaut 1 (What):</label>
                             <select name="fault_what" class="form-control" multiple required>
@@ -125,17 +127,17 @@
                                 <option value="Inspection">Inspection</option>
                             </select>
                         </div>
-                
+
                         <div class="mb-3">
                             <label class="form-label">Commentaires:</label>
                             <textarea name="comments" class="form-control" rows="3"></textarea>
                         </div>
-                
+
                         <button type="submit" class="btn btn-primary">Soumettre</button>
                     </div>
                 </form>
-                
-                
+
+
 
             </section>
 

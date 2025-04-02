@@ -55,7 +55,8 @@
                 <a href="{% url 'maintenance:intervention_history' %}" class="nav-link link"><i
                         class="fas fa-tools me-2"></i>Historique</a>
                 <a href="breakdown.html" class="nav-link link"><i class="fas fa-exclamation-triangle me-2"></i>Arrêt</a>
-                <a href="SPcards.html" class="nav-link link"><i class="fas fa-cogs me-2"></i>Machines</a>
+                <a href="{% url 'maintenance:machines_charts'  %}" class="nav-link link"><i
+                        class="fas fa-cogs me-2"></i>Machines</a>
                 <a href="EQcards.html" class="nav-link link"><i class="fas fa-box me-2"></i>Équipement</a>
                 <a href="department.html" class="nav-link link"><i class="fas fa-map-marker-alt me-2"></i>Zones</a>
                 <a href="{% url 'users:users_list'  %}" class="nav-link link"><i

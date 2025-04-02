@@ -8,8 +8,8 @@
         <thead class="table-dark">
             <tr>
                 <th>Date</th>
-                <th>Technicien</th>
                 <th>Matricule</th>
+                <th>Technicien</th>
                 <th>Catégorie</th>
                 <th>Défaut (What)</th>
                 <th>Défaut (Why)</th>
@@ -21,8 +21,8 @@
             {% for intervention in interventions %}
             <tr>
                 <td>{{ intervention.received_date|date:"d/m/Y H:i" }}</td>
-                <td>{{ intervention.technician.first_name }} {{ intervention.technician.last_name }}</td>
-                <td>{{ intervention.username }}</td>
+                <td>{{ intervention.technicien}}</td>
+                <td>{{ intervention.technicien.first_name}}</td>
                 <td>{{ intervention.get_fault_category_display }}</td>
                 <td>{{ intervention.fault_what|join:", " }}</td>
                 <td>{{ intervention.fault_why|join:", " }}</td>

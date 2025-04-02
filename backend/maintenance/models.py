@@ -4,8 +4,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class Intervention(models.Model):
-    technician = models.ForeignKey(User, on_delete=models.CASCADE)  # Assigned Technician
-    matricule = models.CharField(max_length=50)  # Technician's Matricule
+    technicien = models.ForeignKey(User, on_delete=models.CASCADE)  # Assigned Technician
     received_date = models.DateTimeField(null=True,blank=True)  # Date Received
     end_date = models.DateTimeField(null=True, blank=True)  # Completion Date
     
@@ -74,4 +73,4 @@ class Intervention(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Intervention by {self.technician.username} on {self.received_date}"
+        return f"Intervention by {self.technicien.username} on {self.received_date}"

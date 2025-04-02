@@ -5,6 +5,7 @@ class InterventionForm(forms.ModelForm):
     class Meta:
         model = Intervention
         fields = [
+            "technicien",
             "received_date",
             "end_date",
             "fault_category",

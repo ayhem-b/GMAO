@@ -56,14 +56,26 @@ def users_view(request):
     user = request.user
     interventions = Intervention.objects.all().order_by("-received_date")
     if request.method == "POST":
-        print(request.POST)
-        form = InterventionForm(request.POST)
-        if form.is_valid():
-            form.save()  # Save data to the table
-            return redirect("users:login")
-    else:
-        form = InterventionForm
-    return render(request,"users/users.html",{'user': user,"form": form, "interventions": interventions})
+        # Extract data from request.POST
+        received_date = request.POST.get("received_date")
+        end_date = request.POST.get("end_date")
+        fault_category = request.POST.get("fault_category")
+        fault_what = request.POST.getlist("fault_what")  # Handling multiple selections
+        comments = request.POST.get("comments")
+
+        # Create and save the intervention
+        intervention = Intervention.objects.create(
+            technicien=request.user,  # Assign the logged-in user
+            received_date=received_date,
+            end_date=end_date,
+            fault_category=fault_category,
+            fault_what=fault_what,
+            comments=comments,
+        )
+        intervention.save()
+        logout(request)
+        return redirect('users:login')
+    return render(request,"users/users.html")
 
 def register(request):
     if request.method == "POST":
