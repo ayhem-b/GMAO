@@ -74,6 +74,7 @@ def users_view(request):
         )
         intervention.save()
         logout(request)
+        print(request.POST.getlist('fault_what'))
         return redirect('users:login')
     return render(request,"users/users.html")
 

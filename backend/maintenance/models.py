@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-
+from django.contrib.postgres.fields import ArrayField
 User = get_user_model()
+
 
 class Intervention(models.Model):
     technicien = models.ForeignKey(User, on_delete=models.CASCADE)  # Assigned Technician

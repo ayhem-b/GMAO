@@ -6,6 +6,39 @@
 {% block main %}
  <!-- Main Section -->
  <section class="container my-4">
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Cards for Key Statistics -->
+            <div class="col-md-3">
+                <div class="card text-white bg-danger mb-3">
+                    <div class="card-header">Total Interventions</div>
+                    <div class="card-body">
+                        <h5 class="card-title" id="total-interventions">0</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-danger mb-3">
+                    <div class="card-header">Total Downtime</div>
+                    <div class="card-body">
+                        <h5 class="card-title" id="total-downtime">0h 0m</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Charts Section -->
+        <div class="row">
+            <div class="col-md-6">
+                <canvas id="categoryChart"></canvas>
+            </div>
+            <div class="col-md-6">
+                <canvas id="timelineChart"></canvas>
+            </div>
+        </div>
+    </div>
+    
+  
     <div class="row">
         <div class="col-md-6">
             <div class="card shadow-sm border-danger">
@@ -126,5 +159,41 @@
     </div>
 </section>
 
-</div>
+
+  <!-- Chart.js Script -->
+  <script>
+    fetch("{% url 'maintenance:intervention_data' %}")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("total-interventions").innerText = data.categories.values.reduce((a, b) => a + b, 0);
+            let downtime = data.downtime.values[0];
+            document.getElementById("total-downtime").innerText = `${Math.floor(downtime)}h ${Math.round((downtime % 1) * 60)}m`;
+
+            new Chart(document.getElementById("categoryChart"), {
+                type: 'bar',
+                data: {
+                    labels: data.categories.labels,
+                    datasets: [{
+                        label: "Fault Categories",
+                        backgroundColor: "#dc3545",
+                        data: data.categories.values
+                    }]
+                }
+            });
+
+            new Chart(document.getElementById("timelineChart"), {
+                type: 'line',
+                data: {
+                    labels: data.timeline.labels,
+                    datasets: [{
+                        label: "Interventions Over Time",
+                        backgroundColor: "#dc3545",
+                        borderColor: "#dc3545",
+                        data: data.timeline.values,
+                        fill: false
+                    }]
+                }
+            });
+        });
+</script>
 {% endblock  %}

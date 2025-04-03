@@ -108,32 +108,35 @@
 
                         <div class="mb-3">
                             <label class="form-label">Catégorie de Panne:</label>
-                            <select name="fault_category" class="form-control" required>
-                                <option value="MNP">Maintenance Non Planifiée</option>
-                                <option value="MCP">Maintenance Curative Planifiée</option>
-                                <option value="AUT">Travaux Divers ou Amélioration</option>
-                            </select>
+                            <ul class="form-control list-unstyled">
+                                <li><input type="radio" name="fault_category"> <label value="MNP">Maint Non
+                                        Planifié (MNP)</label></li>
+                                <li><input type="radio" name="fault_category"> <label value="MCP">Maint Curatif
+                                        Planifié (MCP)</label></li>
+                                <li><input type="radio" name="fault_category"> <label value="AUT">Trav Divers ou
+                                        Amélioration (AUT)</label></li>
+                            </ul>
+
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Code Défaut 1 (What):</label>
-                            <select name="fault_what" class="form-control" multiple required>
-                                <option value="Mécanique">Mécanique</option>
-                                <option value="Électrique">Électrique</option>
-                                <option value="Pneumatique">Pneumatique</option>
-                                <option value="Hydraulique">Hydraulique</option>
-                                <option value="Maintenance">Maintenance</option>
-                                <option value="Logiciel">Logiciel</option>
-                                <option value="Inspection">Inspection</option>
-                            </select>
+                            <label class="form-label">Code Défaut 1 (What):</label><br>
+                            <input type="checkbox" name="fault_what" value="Mécanique"> Mécanique<br>
+                            <input type="checkbox" name="fault_what" value="Électrique"> Électrique<br>
+                            <input type="checkbox" name="fault_what" value="Pneumatique"> Pneumatique<br>
+                            <input type="checkbox" name="fault_what" value="Hydraulique"> Hydraulique<br>
+                            <input type="checkbox" name="fault_what" value="Maintenance"> Maintenance<br>
+                            <input type="checkbox" name="fault_what" value="Logiciel"> Logiciel<br>
+                            <input type="checkbox" name="fault_what" value="Inspection"> Inspection<br>
                         </div>
+
 
                         <div class="mb-3">
                             <label class="form-label">Commentaires:</label>
                             <textarea name="comments" class="form-control" rows="3"></textarea>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Soumettre</button>
+                        <button type="submit" class="btn btn-danger">Submit</button>
                     </div>
                 </form>
 

@@ -1,126 +1,94 @@
 {% extends 'users/admin_layout.html' %}
 {% block main %}
-<style>
-    .chart-container {
-        width: 80%;
-        margin: auto;
-        padding: 20px;
-    }
+<div class="container-fluid mt-4">
+    <div class="row">
+        <!-- Cards for Key Statistics -->
+        <div class="col-md-3">
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-header">Total Interventions</div>
+                <div class="card-body">
+                    <h5 class="card-title" id="total-interventions">0</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-header">Total Downtime</div>
+                <div class="card-body">
+                    <h5 class="card-title" id="total-downtime">0h 0m</h5>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    canvas {
-        max-width: 100%;
-    }
-</style>
+    <!-- Charts Section -->
+    <div class="row">
+        <div class="col-md-6">
+            <canvas id="categoryChart"></canvas>
+        </div>
+        <div class="col-md-6">
+            <canvas id="timelineChart"></canvas>
+        </div>
+    </div>
 
-<div>
-    <h2 class="text-center">Statistiques des Interventions</h2>
-
-    <div class="chart-container"><canvas id="faultWhatChart"></canvas></div>
-    <div class="chart-container"><canvas id="faultWhyChart"></canvas></div>
-    <div class="chart-container"><canvas id="faultWhereChart"></canvas></div>
-    <div class="chart-container"><canvas id="sparePartsChart"></canvas></div>
-    <div class="chart-container"><canvas id="timelineChart"></canvas></div>
-    <div class="chart-container"><canvas id="downtimeChart"></canvas></div>
-    <div class="chart-container"><canvas id="categoryChart"></canvas></div>
+    <!-- Faults Categorized by Location -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h3 class="text-danger">Statistics by Location</h3>
+        </div>
+        <div class="col-md-6">
+            <canvas id="faultWhereChart"></canvas>
+        </div>
+    </div>
 </div>
+
+<!-- Chart.js Script -->
+
 <script>
-    async function fetchData() {
-        const response = await fetch("{% url 'maintenance:intervention_data' %}");
-        const data = await response.json();
+    fetch("{% url 'maintenance:intervention_data' %}")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("total-interventions").innerText = data.categories.values.reduce((a, b) => a + b, 0);
+            let downtime = data.downtime.values[0];
+            document.getElementById("total-downtime").innerText = `${Math.floor(downtime)}h ${Math.round((downtime % 1) * 60)}m`;
 
-        // 📊 Category Chart
-        new Chart(document.getElementById("categoryChart"), {
-            type: "pie",
-            data: {
-                labels: data.categories.labels,
-                datasets: [{
-                    data: data.categories.values,
-                    backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-                }],
-            }
+            new Chart(document.getElementById("categoryChart"), {
+                type: 'bar',
+                data: {
+                    labels: data.categories.labels,
+                    datasets: [{
+                        label: "Fault Categories",
+                        backgroundColor: "#dc3545",
+                        data: data.categories.values
+                    }]
+                }
+            });
+
+            new Chart(document.getElementById("timelineChart"), {
+                type: 'line',
+                data: {
+                    labels: data.timeline.labels,
+                    datasets: [{
+                        label: "Interventions Over Time",
+                        backgroundColor: "#dc3545",
+                        borderColor: "#dc3545",
+                        data: data.timeline.values,
+                        fill: false
+                    }]
+                }
+            });
+
+            new Chart(document.getElementById("faultWhereChart"), {
+                type: 'pie',
+                data: {
+                    labels: data.faults_where.labels,
+                    datasets: [{
+                        label: "Faults by Location",
+                        backgroundColor: ["#dc3545", "#ffc107", "#28a745"],
+                        data: data.faults_where.values
+                    }]
+                }
+            });
         });
-
-        // ⚙️ Fault What Chart
-        new Chart(document.getElementById("faultWhatChart"), {
-            type: "bar",
-            data: {
-                labels: data.faults_what.labels,
-                datasets: [{
-                    label: "Nombre d'incidents",
-                    data: data.faults_what.values,
-                    backgroundColor: "rgba(54, 162, 235, 0.6)"
-                }],
-            }
-        });
-
-        // 🚨 Fault Why Chart
-        new Chart(document.getElementById("faultWhyChart"), {
-            type: "bar",
-            data: {
-                labels: data.faults_why.labels,
-                datasets: [{
-                    label: "Cause de Défaut",
-                    data: data.faults_why.values,
-                    backgroundColor: "rgba(255, 99, 132, 0.6)"
-                }],
-            }
-        });
-
-        // 🏭 Fault Where Chart
-        new Chart(document.getElementById("faultWhereChart"), {
-            type: "bar",
-            data: {
-                labels: data.faults_where.labels,
-                datasets: [{
-                    label: "Localisation",
-                    data: data.faults_where.values,
-                    backgroundColor: "rgba(75, 192, 192, 0.6)"
-                }],
-            }
-        });
-
-        // 🛠️ Spare Parts Usage
-        new Chart(document.getElementById("sparePartsChart"), {
-            type: "bar",
-            data: {
-                labels: data.spare_parts.labels,
-                datasets: [{
-                    label: "Utilisation des Pièces",
-                    data: data.spare_parts.values,
-                    backgroundColor: "rgba(153, 102, 255, 0.6)"
-                }],
-            }
-        });
-
-        // 📅 Timeline Chart
-        new Chart(document.getElementById("timelineChart"), {
-            type: "line",
-            data: {
-                labels: data.timeline.labels,
-                datasets: [{
-                    label: "Interventions par Jour",
-                    data: data.timeline.values,
-                    borderColor: "rgb(75, 192, 192)",
-                    fill: false
-                }],
-            }
-        });
-
-        // ⏳ Downtime Chart
-        new Chart(document.getElementById("downtimeChart"), {
-            type: "line",
-            data: {
-                labels: data.downtime.labels,
-                datasets: [{
-                    label: "Temps d'Arrêt (h)",
-                    data: data.downtime.values,
-                    borderColor: "rgb(255, 159, 64)",
-                    fill: false
-                }],
-            }
-        });
-    }
-
-    fetchData();
 </script>
 {% endblock %}

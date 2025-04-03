@@ -3,14 +3,15 @@ from .models import Intervention
 from django.http import JsonResponse
 from collections import Counter
 from datetime import datetime
+from django.db.models import Count, Sum, F, ExpressionWrapper, DurationField
 from django.db.models.functions import TruncDate
-from django.db.models import Count
-from django.db.models import Sum, F, ExpressionWrapper, DurationField
 # Create your views here.
 
 def intervention_history(request):
     interventions = Intervention.objects.all().order_by('-received_date')  # Sort by most recent
     return render(request, 'maintenance/intervention_history.html', {'interventions': interventions})
+
+
 
 def intervention_data(request):
     interventions = Intervention.objects.all()
@@ -22,91 +23,46 @@ def intervention_data(request):
         "values": [c["count"] for c in category_counts]
     }
 
-    # ⚙️ Count by Fault What
-    fault_what_data = {}
-    for intervention in interventions:
-        for fault in intervention.fault_what:
-            fault_what_data[fault] = fault_what_data.get(fault, 0) + 1
-    fault_what_data = {
-        "labels": list(fault_what_data.keys()),
-        "values": list(fault_what_data.values())
-    }
+    # ⚙️ Count by Fault What, Why, Where, Spare Parts
+    fault_what_data, fault_why_data, fault_where_data, spare_parts_data = {}, {}, {}, {}
 
-    # 🔧 Count by Fault Why
-    fault_why_data = {}
     for intervention in interventions:
-        for reason in intervention.fault_why:
-            fault_why_data[reason] = fault_why_data.get(reason, 0) + 1
-    fault_why_data = {
-        "labels": list(fault_why_data.keys()),
-        "values": list(fault_why_data.values())
-    }
+        # Ensure correct type (handles JSONField or string storage)
+        for fault in intervention.fault_what if isinstance(intervention.fault_what, list) else intervention.fault_what.split(","):
+            fault_what_data[fault.strip()] = fault_what_data.get(fault.strip(), 0) + 1
 
-    # 🏭 Count by Fault Where
-    fault_where_data = {}
-    for intervention in interventions:
-        for location in intervention.fault_where:
-            fault_where_data[location] = fault_where_data.get(location, 0) + 1
-    fault_where_data = {
-        "labels": list(fault_where_data.keys()),
-        "values": list(fault_where_data.values())
-    }
+        for reason in intervention.fault_why if isinstance(intervention.fault_why, list) else intervention.fault_why.split(","):
+            fault_why_data[reason.strip()] = fault_why_data.get(reason.strip(), 0) + 1
 
-    # 🛠️ Spare Parts Usage
-    spare_parts_data = {}
-    for intervention in interventions:
-        for part in intervention.spare_parts:
-            spare_parts_data[part] = spare_parts_data.get(part, 0) + 1
-    spare_parts_data = {
-        "labels": list(spare_parts_data.keys()),
-        "values": list(spare_parts_data.values())
-    }
+        for location in intervention.fault_where if isinstance(intervention.fault_where, list) else intervention.fault_where.split(","):
+            fault_where_data[location.strip()] = fault_where_data.get(location.strip(), 0) + 1
+
+        for part in intervention.spare_parts if isinstance(intervention.spare_parts, list) else intervention.spare_parts.split(","):
+            spare_parts_data[part.strip()] = spare_parts_data.get(part.strip(), 0) + 1
+
+    # Convert data to lists
+    fault_what_data = {"labels": list(fault_what_data.keys()), "values": list(fault_what_data.values())}
+    fault_why_data = {"labels": list(fault_why_data.keys()), "values": list(fault_why_data.values())}
+    fault_where_data = {"labels": list(fault_where_data.keys()), "values": list(fault_where_data.values())}
+    spare_parts_data = {"labels": list(spare_parts_data.keys()), "values": list(spare_parts_data.values())}
 
     # 📅 Interventions Over Time
-    timeline_data = interventions.extra({"day": "date(received_date)"}).values("day").annotate(count=Count("id")).order_by("day")
+    timeline_counts = interventions.annotate(date=TruncDate("received_date")).values("date").annotate(count=Count("id")).order_by("date")
     timeline_data = {
-        "labels": [str(entry["day"]) for entry in timeline_data],
-        "values": [entry["count"] for entry in timeline_data]
+        "labels": [str(entry["date"]) for entry in timeline_counts],
+        "values": [entry["count"] for entry in timeline_counts]
     }
 
-  # ✅ Fix: Calculate total downtime in hours
+    # ⏳ Total Downtime in Hours
     downtime_data = (
-        Intervention.objects.filter(end_date__isnull=False)
-        .annotate(
-            downtime=ExpressionWrapper(
-                F('end_date') - F('received_date'), output_field=DurationField()
-            )
-        )
-        .aggregate(total_downtime=Sum('downtime'))
+        interventions.filter(end_date__isnull=False)
+        .annotate(downtime=ExpressionWrapper(F("end_date") - F("received_date"), output_field=DurationField()))
+        .aggregate(total_downtime=Sum("downtime"))
     )
 
-    # Convert downtime to hours (PostgreSQL stores duration in seconds)
-    total_downtime_hours = downtime_data['total_downtime'].total_seconds() / 3600 if downtime_data['total_downtime'] else 0
+    total_downtime_hours = downtime_data["total_downtime"].total_seconds() / 3600 if downtime_data["total_downtime"] else 0
 
-def intervention_data(request):
-    # ✅ Fix: Calculate total downtime in hours
-    downtime_data = (
-        Intervention.objects.filter(end_date__isnull=False)
-        .annotate(
-            downtime=ExpressionWrapper(
-                F('end_date') - F('received_date'), output_field=DurationField()
-            )
-        )
-        .aggregate(total_downtime=Sum('downtime'))
-    )
-
-    # Convert downtime to hours
-    total_downtime_hours = downtime_data['total_downtime'].total_seconds() / 3600 if downtime_data['total_downtime'] else 0
-
-    # Example of other statistics (replace with actual queries)
-    category_data = {"labels": ["MNP", "MCP", "AUT"], "values": [10, 5, 3]}
-    fault_what_data = {"labels": ["Mécanique", "Électrique"], "values": [7, 8]}
-    fault_why_data = {"labels": ["Usure", "Blocage"], "values": [4, 6]}
-    fault_where_data = {"labels": ["Sewing", "Line UP"], "values": [5, 7]}
-    spare_parts_data = {"labels": ["Pièce A", "Pièce B"], "values": [3, 2]}
-    timeline_data = {"labels": ["2025-04-01", "2025-04-02"], "values": [6, 4]}
-
-    # ✅ Merge all data into a single JSON response
+    # ✅ Return JSON Response
     return JsonResponse({
         "categories": category_data,
         "faults_what": fault_what_data,
@@ -119,6 +75,5 @@ def intervention_data(request):
             "values": [total_downtime_hours]
         }
     })
-
 def machines_charts(request):
     return render(request, "maintenance/machines_charts.html")
