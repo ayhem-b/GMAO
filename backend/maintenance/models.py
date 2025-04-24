@@ -1,9 +1,12 @@
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.contrib.postgres.fields import ArrayField
+
+
+
 User = get_user_model()
-
-
+# intervention model
 class Intervention(models.Model):
     technicien = models.ForeignKey(User, on_delete=models.CASCADE)  # Assigned Technician
     received_date = models.DateTimeField(null=True,blank=True)  # Date Received
@@ -75,3 +78,24 @@ class Intervention(models.Model):
 
     def __str__(self):
         return f"Intervention by {self.technicien.username} on {self.received_date}"
+
+#workorder model
+class WorkOrder(models.Model):
+    STATUS_CHOICES = [
+        ('default', 'Default Issued'),
+        ('in_progress', 'In Progress'),
+        ('fixed', 'Fixed Now'),
+        ('not_fixed', 'Not Fixed'),
+    ]
+
+    machine_name = models.CharField(max_length=255)
+    machine_id = models.IntegerField(null=True, blank=True)  # Optional if you are linking to a machine model
+    time_of_default = models.DateTimeField(default=timezone.now)
+    description = models.TextField(blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='default')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    assigned_user = models.ForeignKey('auth.User', null=True, blank=True, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f"{self.machine_name} - {self.status}"

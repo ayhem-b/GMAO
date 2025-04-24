@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Work Orders</title>
+    <!-- Include Bootstrap for modal if needed -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <h1>Your Work Orders</h1>
+    <ul>
+        {% for order in orders %}
+        <li>
+            <strong>{{ order.machine_name }}</strong> | {{ order.time_of_default }} | {{ order.get_status_display }}
+            
+            <!-- In an AJAX implementation, this link could trigger a modal load -->
+        </li>
+        {% empty %}
+        <li>No work orders available.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

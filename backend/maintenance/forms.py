@@ -1,5 +1,5 @@
 from django import forms
-from .models import Intervention
+from .models import Intervention ,WorkOrder
 
 class InterventionForm(forms.ModelForm):
     class Meta:
@@ -21,4 +21,11 @@ class InterventionForm(forms.ModelForm):
             "fault_what": forms.CheckboxSelectMultiple(),
             "fault_why": forms.CheckboxSelectMultiple(),
             "fault_where": forms.CheckboxSelectMultiple(),
+        }
+class WorkOrderForm(forms.ModelForm):
+    class Meta:
+        model = WorkOrder
+        fields = ['machine_name', 'machine_id', 'time_of_default', 'description', 'status', 'assigned_user']
+        widgets = {
+            'time_of_default': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         }

@@ -1,10 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .models import Intervention
 from django.http import JsonResponse
 from collections import Counter
 from datetime import datetime
 from django.db.models import Count, Sum, F, ExpressionWrapper, DurationField
 from django.db.models.functions import TruncDate
+from maintenance.forms import WorkOrderForm
+from django.contrib.auth.decorators import login_required
+from .models import WorkOrder
 # Create your views here.
 
 def intervention_history(request):
@@ -77,3 +80,23 @@ def intervention_data(request):
     })
 def machines_charts(request):
     return render(request, "maintenance/machines_charts.html")
+
+
+def create_work_order(request):
+    if request.method == 'POST':
+        form = WorkOrderForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('maintenance:machines_charts')  # Redirect to a page listing work orders
+    else:
+        form = WorkOrderForm()
+    return render(request, 'maintenance/create_work_order.html', {'form': form})
+
+
+
+
+@login_required
+def work_order_list(request):
+    # Optionally filter work orders by assigned user or other criteria
+    orders = WorkOrder.objects.all()  # or filter based on user's role/assignment
+    return render(request, 'maintenance/work_orders_list.html', {'orders': orders})
