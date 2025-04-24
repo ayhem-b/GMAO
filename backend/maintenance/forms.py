@@ -25,7 +25,7 @@ class InterventionForm(forms.ModelForm):
 class WorkOrderForm(forms.ModelForm):
     class Meta:
         model = WorkOrder
-        fields = ['machine_name', 'machine_id', 'time_of_default', 'description', 'status', 'assigned_user']
+        fields = ['machine_name', 'machine_id', 'time_of_default', 'description', 'assigned_user']
         widgets = {
             'time_of_default': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         }
