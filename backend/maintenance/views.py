@@ -90,13 +90,13 @@ def create_work_order(request):
             return redirect('maintenance:machines_charts')  # Redirect to a page listing work orders
     else:
         form = WorkOrderForm()
-    return render(request, 'maintenance/create_work_order.html', {'form': form})
+        orders = WorkOrder.objects.all()
+    return render(request, 'maintenance/create_work_order.html', {'form': form,'orders': orders})
 
 
 
 
 @login_required
 def work_order_list(request):
-    # Optionally filter work orders by assigned user or other criteria
-    orders = WorkOrder.objects.all()  # or filter based on user's role/assignment
-    return render(request, 'maintenance/work_orders_list.html', {'orders': orders})
+
+    return render(request, 'maintenance/work_orders_list.html')
