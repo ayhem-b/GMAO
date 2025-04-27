@@ -1,66 +1,61 @@
 {% extends 'users/admin_layout.html'  %}
 {% block main %}
 <body>
-    <div>
+    <div >
+     
+        
         <div class="container mt-5">
             <div class="card shadow">
                 <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0">Machines List</h4>
+                    <h4 class="mb-0">Work Orders List</h4>
                 </div>
                 <div class="card-body">
-                    {% if machine %}
+                    {% if work_orders %}
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead class="table">
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Machine ID</th>
+                                        <th>ID</th>
+                                        <th>Title</th>
                                         <th>Description</th>
+                                        <th>Created At</th>
                                         <th>Status</th>
+                                    
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for machine in machine %}
+                                    {% for work_orders in work_orders %}
                                         <tr>
-                                            
-                                            <td>{{ machine.name }}</td>
-                                            <td>{{ machine.machine_id }}</td>
-                                            <td>{{ machine.description|truncatechars:50 }}</td>
-                                            <td>
-                                                {% if machine.status == 'default' %}
-                                                    <span class="badge bg-secondary">Default Issued</span>
-                                                {% elif machine.status == 'in_progress' %}
-                                                    <span class="badge bg-warning text-dark">In Progress</span>
-                                                {% elif machine.status == 'fixed' %}
-                                                    <span class="badge bg-success">Fixed</span>
-                                                {% elif machine.status == 'not_fixed' %}
-                                                    <span class="badge bg-danger">Not Fixed</span>
-                                                {% endif %}
-                                            </td>
+                                            <td>{{ work_orders.machine_id }}</td>
+                                            <td>{{ work_orders.assigned_user }}</td>
+                                            <td>{{ work_orders.description }}</td>
+                                            <td>{{ work_orders.created_at|date:"Y-m-d H:i" }}</td>
+                                            <td>{{ work_orders.status }}</td>
+                                        
                                         </tr>
                                     {% endfor %}
                                 </tbody>
                             </table>
                         </div>
                     {% else %}
-                        <p class="text-muted">No machines found.</p>
+                        <p class="text-muted">No work orders found.</p>
                     {% endif %}
                 </div>
             </div>
-       </div>
-        <div class="container mt-4">
+        </div>
+        <div class="container mt-5">
             <div class="card shadow">
                 <div class="card-header bg-danger text-white">
-                    <h4 class="mb-0">New Machine</h4>
+                    <h4 class="mb-0">Create a New Work Order</h4>
                 </div>
-                <div class="card-body ">
+                <div class="card-body">
                     <form method="post">
                         {% csrf_token %}
                         <div class="row">
                             {% for field in form %}
                                 <div class="mb-3 col-md-6">
                                     <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                                    <div>{{ field }}</div>
+                                    {{ field }}
                                     {% if field.help_text %}
                                         <div class="form-text">{{ field.help_text }}</div>
                                     {% endif %}
@@ -71,13 +66,12 @@
                             {% endfor %}
                         </div>
                         <div class="text-end">
-                            <button type="submit" class="btn btn-danger">Add New</button>
+                            <button type="submit" class="btn btn-danger">Create Work Order</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-        
     </div>
 </body>
 {% endblock %}

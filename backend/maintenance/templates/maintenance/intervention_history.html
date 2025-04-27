@@ -5,7 +5,7 @@
     <h2 class="text-center">Historique des Interventions</h2>
 
     <table class="table table-bordered table-striped">
-        <thead class="table-dark">
+        <thead class="table">
             <tr>
                 <th>Date</th>
                 <th>Matricule</th>
@@ -14,6 +14,7 @@
                 <th>Défaut (What)</th>
                 <th>Défaut (Why)</th>
                 <th>Défaut (Where)</th>
+                <th>Spare parts</th>
                 <th>Commentaires</th>
             </tr>
         </thead>
@@ -24,9 +25,16 @@
                 <td>{{ intervention.technicien}}</td>
                 <td>{{ intervention.technicien.first_name}}</td>
                 <td>{{ intervention.get_fault_category_display }}</td>
-                <td>{{ intervention.fault_what|join:", " }}</td>
-                <td>{{ intervention.fault_why|join:", " }}</td>
-                <td>{{ intervention.fault_where|join:", " }}</td>
+                <td>{{ intervention.fault_what }}</td>
+                <td>{{ intervention.fault_why }}</td>
+                <td>{{ intervention.fault_where }}</td>
+              
+                {%if intervention.spare_parts%}
+                <td>{{ intervention.spare_parts }}</td>
+                {% else %}
+                <td>No used spare parts</td>
+                {% endif %}
+                
                 <td>{{ intervention.comments }}</td>
             </tr>
             {% empty %}

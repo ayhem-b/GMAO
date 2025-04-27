@@ -76,73 +76,28 @@
                 </div>
             </header>
             <!-- Statistic Section -->
-            <section class="container my-4">
+            <div class="container mt-5">
+                <h2 class="mb-4">Add New Intervention</h2>
                 <form method="post">
                     {% csrf_token %}
-                    <div class="container my-4">
-                        <h2 class="text-center">Intervention</h2>
-
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="technician-name" class="form-label">Nom & Prénom Technicien:</label>
-                                <input type="text" class="form-control" id="technician"
-                                    value="{{ user.first_name }} {{ user.last_name }}" readonly>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="matricule" class="form-label">Matricule:</label>
-                                <input type="text" class="form-control" id="technicien" value="{{ user.username }}"
-                                    readonly>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-3">
-                                <label for="received-date" class="form-label">Reçu le:</label>
-                                <input type="datetime-local" class="form-control" name="received_date" required>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="end-date" class="form-label">Fin le:</label>
-                                <input type="datetime-local" class="form-control" name="end_date">
-                            </div>
-                        </div>
-
+                    {{ form.non_field_errors }}
+                    
+                    {% for field in form %}
                         <div class="mb-3">
-                            <label class="form-label">Catégorie de Panne:</label>
-                            <ul class="form-control list-unstyled">
-                                <li><input type="radio" name="fault_category"> <label value="MNP">Maint Non
-                                        Planifié (MNP)</label></li>
-                                <li><input type="radio" name="fault_category"> <label value="MCP">Maint Curatif
-                                        Planifié (MCP)</label></li>
-                                <li><input type="radio" name="fault_category"> <label value="AUT">Trav Divers ou
-                                        Amélioration (AUT)</label></li>
-                            </ul>
-
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.help_text %}
+                                <div class="form-text">{{ field.help_text }}</div>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
                         </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Code Défaut 1 (What):</label><br>
-                            <input type="checkbox" name="fault_what" value="Mécanique"> Mécanique<br>
-                            <input type="checkbox" name="fault_what" value="Électrique"> Électrique<br>
-                            <input type="checkbox" name="fault_what" value="Pneumatique"> Pneumatique<br>
-                            <input type="checkbox" name="fault_what" value="Hydraulique"> Hydraulique<br>
-                            <input type="checkbox" name="fault_what" value="Maintenance"> Maintenance<br>
-                            <input type="checkbox" name="fault_what" value="Logiciel"> Logiciel<br>
-                            <input type="checkbox" name="fault_what" value="Inspection"> Inspection<br>
-                        </div>
-
-
-                        <div class="mb-3">
-                            <label class="form-label">Commentaires:</label>
-                            <textarea name="comments" class="form-control" rows="3"></textarea>
-                        </div>
-
-                        <button type="submit" class="btn btn-danger">Submit</button>
-                    </div>
+                    {% endfor %}
+                    
+                    <button type="submit" class="btn btn-danger">Save Intervention</button>
                 </form>
-
-
-
-            </section>
+            </div>
 
         </div>
 

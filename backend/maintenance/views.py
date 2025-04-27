@@ -1,11 +1,11 @@
 from django.shortcuts import render,redirect
-from .models import Intervention
+from .models import Intervention, Machine
 from django.http import JsonResponse
 from collections import Counter
 from datetime import datetime
 from django.db.models import Count, Sum, F, ExpressionWrapper, DurationField
 from django.db.models.functions import TruncDate
-from maintenance.forms import WorkOrderForm
+from maintenance.forms import WorkOrderForm , MachineForm
 from django.contrib.auth.decorators import login_required
 from .models import WorkOrder
 # Create your views here.
@@ -13,6 +13,7 @@ from .models import WorkOrder
 def intervention_history(request):
     interventions = Intervention.objects.all().order_by('-received_date')  # Sort by most recent
     return render(request, 'maintenance/intervention_history.html', {'interventions': interventions})
+
 
 
 
@@ -79,24 +80,39 @@ def intervention_data(request):
         }
     })
 def machines_charts(request):
-    return render(request, "maintenance/machines_charts.html")
+    if request.method == 'POST':
+        form = MachineForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('maintenance:machines_charts')
+    else:
+        form = MachineForm()
+        machine=Machine.objects.all()
+    return render(request, "maintenance/machines_charts.html", {'machine': machine, 'form': form})
 
 
-def create_work_order(request):
+def work_order(request):
     if request.method == 'POST':
         form = WorkOrderForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('maintenance:machines_charts')  # Redirect to a page listing work orders
+            work_order = form.save()  # Save the form and get the work order instance
+
+            # Now update the machine status
+            work_order.machine_id.status = "not_fixed"  # machine_id is the ForeignKey to Machine
+            work_order.machine_id.save()  # Save the updated machine status
+
+            return redirect('maintenance:work_order')  # Redirect after saving
     else:
         form = WorkOrderForm()
-        orders = WorkOrder.objects.all()
-    return render(request, 'maintenance/create_work_order.html', {'form': form,'orders': orders})
+
+    work_orders = WorkOrder.objects.all()  # Get all work orders
+    return render(request, 'maintenance/work_order.html', {'form': form, 'work_orders': work_orders})
 
 
 
 
 @login_required
-def work_order_list(request):
-
-    return render(request, 'maintenance/work_orders_list.html')
+def breakdowns(request):
+    # Fetch all work orders from the database
+    work_orders = WorkOrder.objects.all()
+    return render(request, 'maintenance/breakdowns.html', {'work_orders': work_orders})

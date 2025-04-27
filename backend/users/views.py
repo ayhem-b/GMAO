@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from maintenance.models import Intervention
+from maintenance.models import Intervention, Machine
 from maintenance.forms import InterventionForm
 
 
@@ -55,28 +55,22 @@ def admin(request):
 def users_view(request):
     user = request.user
     interventions = Intervention.objects.all().order_by("-received_date")
-    if request.method == "POST":
-        # Extract data from request.POST
-        received_date = request.POST.get("received_date")
-        end_date = request.POST.get("end_date")
-        fault_category = request.POST.get("fault_category")
-        fault_what = request.POST.getlist("fault_what")  # Handling multiple selections
-        comments = request.POST.get("comments")
+    if request.method == 'POST':
+            form = InterventionForm(request.POST)
+            if form.is_valid():
+                intervention = form.save()
+                intervention.Machine.status = "in_progress"
+                intervention.Machine.save()
+                # Update machine status
+                if intervention.Machine and intervention.end_date:
+                    intervention.Machine.status = "fixed"
+                    intervention.Machine.save()
+                return redirect('users:users')  # your success url
+    else:
+        form = InterventionForm()
 
-        # Create and save the intervention
-        intervention = Intervention.objects.create(
-            technicien=request.user,  # Assign the logged-in user
-            received_date=received_date,
-            end_date=end_date,
-            fault_category=fault_category,
-            fault_what=fault_what,
-            comments=comments,
-        )
-        intervention.save()
-        logout(request)
-        print(request.POST.getlist('fault_what'))
-        return redirect('users:login')
-    return render(request,"users/users.html")
+    return render(request, 'users/users.html', {'form': form})
+
 
 def register(request):
     if request.method == "POST":

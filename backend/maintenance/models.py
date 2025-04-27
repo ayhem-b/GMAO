@@ -9,7 +9,7 @@ User = get_user_model()
 # Machine model
 class Machine(models.Model):
     STATUS_CHOICES = [
-        ('default', 'Default Issued'),
+        ('Working', 'Working'),
         ('in_progress', 'In Progress'),
         ('fixed', 'Fixed Now'),
         ('not_fixed', 'Not Fixed'),
@@ -26,8 +26,13 @@ class Machine(models.Model):
 #workorder model
 class WorkOrder(models.Model):
  
-
-    machine_name = models.CharField(max_length=255)
+    STATUS_CHOICES = [
+            ('Working', 'Working'),
+            ('in_progress', 'In Progress'),
+            ('fixed', 'Fixed Now'),
+            ('not_fixed', 'Not Fixed'),
+        ]
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='default')
     machine_id =models.ForeignKey('Machine', on_delete=models.CASCADE)  # ForeignKey to Machine model
     time_of_default = models.DateTimeField(default=timezone.now)
     description = models.TextField(blank=True)
@@ -65,17 +70,46 @@ class Intervention(models.Model):
     ]
     fault_category = models.CharField(max_length=3, choices=CATEGORY_CHOICES,null=True, blank=True)
 
+    FAULT_WHAT_CHOICES = [
+        ('motor', 'Motor'),
+        ('sensor', 'Sensor'),
+        ('belt', 'Belt'),
+        ('pump', 'Pump'),
+        ('other', 'Other'),
+    ]
+
+    FAULT_WHY_CHOICES = [
+        ('wear', 'Wear and Tear'),
+        ('misalignment', 'Misalignment'),
+        ('electrical', 'Electrical Issue'),
+        ('overload', 'Overload'),
+        ('other', 'Other'),
+    ]
+
+    FAULT_WHERE_CHOICES = [
+        ('line1', 'Line 1'),
+        ('line2', 'Line 2'),
+        ('sectionA', 'Section A'),
+        ('sectionB', 'Section B'),
+        ('other', 'Other'),
+    ]
+
+    SPARE_PARTS_CHOICES = [
+        ('belt', 'Belt'),
+        ('sensor', 'Sensor'),
+        ('motor', 'Motor'),
+        ('pump', 'Pump'),
+        ('other', 'Other'),
+    ]
     Machine=models.ForeignKey(Machine, on_delete=models.CASCADE, null=True, blank=True)  # ForeignKey to Machine model
-    fault_what = models.JSONField(default=list,null=True, blank=True)  # Store multiple selections
+    fault_what = models.CharField(max_length=50, choices=FAULT_WHAT_CHOICES, null=True, blank=True)
+    fault_why = models.CharField(max_length=50, choices=FAULT_WHY_CHOICES, null=True, blank=True)
+    fault_where = models.CharField(max_length=50, choices=FAULT_WHERE_CHOICES, null=True, blank=True)
 
-    fault_why = models.JSONField(default=list,null=True, blank=True)
-
-
-    fault_where = models.JSONField(default=list,null=True, blank=True)
 
     # Spare Parts
     spare_parts = models.JSONField(default=list,null=True, blank=True)  # Store part reference and quantity
-
+    used_spare_parts=models.ForeignKey(SparePart, on_delete=models.CASCADE, null=True, blank=True)  # ForeignKey to SparePart model
     # Technician Comments
     comments = models.TextField(blank=True,null=True)
 
