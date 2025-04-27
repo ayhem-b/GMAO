@@ -6,8 +6,8 @@
 {% block main %}
  <!-- Main Section -->
  <section class="container my-4">
-    <div class="container mt-4">
-        <div class="row">
+    <div class="container mt-4 align-items-center">
+        <div class=" row mb-4">
             <!-- Cards for Key Statistics -->
             <div class="col-md-3">
                 <div class="card text-white bg-danger mb-3">
@@ -52,6 +52,7 @@
             <div class="col-md-6">
                 <canvas id="timelineChart"></canvas>
             </div>
+         v>
          
         </div>
     </div>
@@ -170,13 +171,24 @@
         });
 
         // Create Faults Where Chart
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+        
+        const colors = data.faults_where.labels.map(() => getRandomColor());  // Generate a random color for each bar
+        
         new Chart(document.getElementById("faultWhereChart"), {
             type: 'bar',
             data: {
                 labels: data.faults_where.labels,
                 datasets: [{
                     label: "Fault Where",
-                    backgroundColor: "#28a745",
+                    backgroundColor: colors,  // Assign the generated colors to the bars
                     data: data.faults_where.values
                 }]
             }
@@ -211,16 +223,7 @@
         });
 
         // Create Downtime Chart
-        new Chart(document.getElementById("downtimeChart"), {
-            type: 'pie',
-            data: {
-                labels: data.downtime.labels,
-                datasets: [{
-                    data: data.downtime.values,
-                    backgroundColor: ["#ffc107"]
-                }]
-            }
-        });
+       
     })
     .catch(error => console.error("Error fetching data: ", error));
    

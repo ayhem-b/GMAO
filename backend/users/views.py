@@ -27,7 +27,6 @@ def edit_user(request):
         except User.DoesNotExist:
             return JsonResponse({"success": False, "error": "User not found"})
     return JsonResponse({"success": False, "error": "Invalid request"})
-
 @login_required
 def delete_user(request):
     if request.method == "POST":
@@ -40,25 +39,22 @@ def delete_user(request):
         except User.DoesNotExist:
             return JsonResponse({"success": False, "error": "User not found"})
     return JsonResponse({"success": False, "error": "Invalid request"})
-
-
-
 def user_list(request):
     users = User.objects.all()
     return render(request, 'users/user_list.html', {'users': users})
-
-# Create your views here.
 @login_required
 def admin(request):
     return render(request, "users/admin.html")
-
 def users_view(request):
     user = request.user
     interventions = Intervention.objects.all().order_by("-received_date")
     if request.method == 'POST':
             form = InterventionForm(request.POST)
+            intervention = Intervention.objects.create(technicien=request.user, )
             if form.is_valid():
-                intervention = form.save()
+                intervention = form.save(commit=False)
+                intervention.technicien = request.user  # Set the currently logged-in user
+                intervention.save()
                 intervention.Machine.status = "in_progress"
                 intervention.Machine.save()
                 # Update machine status
@@ -70,8 +66,6 @@ def users_view(request):
         form = InterventionForm()
 
     return render(request, 'users/users.html', {'form': form})
-
-
 def register(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)
@@ -81,7 +75,6 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, "users/register.html", {"form": form})
-
 def user_login(request):  # I Renamed the function to avoid conflict with built-in login function
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
@@ -95,12 +88,10 @@ def user_login(request):  # I Renamed the function to avoid conflict with built-
     else:
         form = AuthenticationForm()
     return render(request, "users/login.html", {"form": form})
-
 def user_logout(request):
     if request.method == "POST":
         logout(request)
         return redirect("users:login")
-    
 def users_list(request):
     if request.method == "POST":
         username = request.POST["username"]

@@ -13,10 +13,6 @@ from .models import WorkOrder
 def intervention_history(request):
     interventions = Intervention.objects.all().order_by('-received_date')  # Sort by most recent
     return render(request, 'maintenance/intervention_history.html', {'interventions': interventions})
-
-
-
-
 def intervention_data(request):
     interventions = Intervention.objects.all()
 
@@ -31,18 +27,22 @@ def intervention_data(request):
     fault_what_data, fault_why_data, fault_where_data, spare_parts_data = {}, {}, {}, {}
 
     for intervention in interventions:
-        # Ensure correct type (handles JSONField or string storage)
-        for fault in intervention.fault_what if isinstance(intervention.fault_what, list) else intervention.fault_what.split(","):
-            fault_what_data[fault.strip()] = fault_what_data.get(fault.strip(), 0) + 1
+        # Ensure fault_what is not None before splitting it
+        if intervention.fault_what:
+            for fault in intervention.fault_what if isinstance(intervention.fault_what, list) else intervention.fault_what.split(","):
+                fault_what_data[fault.strip()] = fault_what_data.get(fault.strip(), 0) + 1
 
-        for reason in intervention.fault_why if isinstance(intervention.fault_why, list) else intervention.fault_why.split(","):
-            fault_why_data[reason.strip()] = fault_why_data.get(reason.strip(), 0) + 1
+        if intervention.fault_why:
+            for reason in intervention.fault_why if isinstance(intervention.fault_why, list) else intervention.fault_why.split(","):
+                fault_why_data[reason.strip()] = fault_why_data.get(reason.strip(), 0) + 1
 
-        for location in intervention.fault_where if isinstance(intervention.fault_where, list) else intervention.fault_where.split(","):
-            fault_where_data[location.strip()] = fault_where_data.get(location.strip(), 0) + 1
+        if intervention.fault_where:
+            for location in intervention.fault_where if isinstance(intervention.fault_where, list) else intervention.fault_where.split(","):
+                fault_where_data[location.strip()] = fault_where_data.get(location.strip(), 0) + 1
 
-        for part in intervention.spare_parts if isinstance(intervention.spare_parts, list) else intervention.spare_parts.split(","):
-            spare_parts_data[part.strip()] = spare_parts_data.get(part.strip(), 0) + 1
+        if intervention.spare_parts:
+            for part in intervention.spare_parts if isinstance(intervention.spare_parts, list) else intervention.spare_parts.split(","):
+                spare_parts_data[part.strip()] = spare_parts_data.get(part.strip(), 0) + 1
 
     # Convert data to lists
     fault_what_data = {"labels": list(fault_what_data.keys()), "values": list(fault_what_data.values())}
@@ -65,6 +65,7 @@ def intervention_data(request):
     )
 
     total_downtime_hours = downtime_data["total_downtime"].total_seconds() / 3600 if downtime_data["total_downtime"] else 0
+    
 
     # ✅ Return JSON Response
     return JsonResponse({
@@ -89,8 +90,6 @@ def machines_charts(request):
         form = MachineForm()
         machine=Machine.objects.all()
     return render(request, "maintenance/machines_charts.html", {'machine': machine, 'form': form})
-
-
 def work_order(request):
     if request.method == 'POST':
         form = WorkOrderForm(request.POST)
@@ -107,11 +106,6 @@ def work_order(request):
 
     work_orders = WorkOrder.objects.all()  # Get all work orders
     return render(request, 'maintenance/work_order.html', {'form': form, 'work_orders': work_orders})
-
-
-
-
-@login_required
 def breakdowns(request):
     # Fetch all work orders from the database
     work_orders = WorkOrder.objects.all()

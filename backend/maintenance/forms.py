@@ -5,7 +5,7 @@ class InterventionForm(forms.ModelForm):
     class Meta:
         model = Intervention
         fields = [
-            "technicien",
+            
             "Machine",
             "received_date",
             "end_date",
@@ -24,7 +24,7 @@ class InterventionForm(forms.ModelForm):
             "fault_why": forms.Select(attrs={"class": "form-control"}),
             "fault_where": forms.Select(attrs={"class": "form-control"}),
             "spare_parts": forms.Select(attrs={"class": "form-control"}),
-            "technicien": forms.Select(attrs={"class": "form-control"}),
+            
             "Machine": forms.Select(attrs={"class": "form-control"}),
             "comments": forms.Textarea(attrs={"class": "form-control"}),
         }
