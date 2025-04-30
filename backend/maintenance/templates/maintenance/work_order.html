@@ -30,7 +30,17 @@
                                             <td>{{ work_orders.assigned_user }}</td>
                                             <td>{{ work_orders.description }}</td>
                                             <td>{{ work_orders.created_at|date:"Y-m-d H:i" }}</td>
-                                            <td>{{ work_orders.status }}</td>
+                                            <td>
+                                                {% if work_orders.status == 'waiting' %}
+                                                    <span class="badge bg-secondary">Waiting</span>
+                                                {% elif work_orders.status == 'in_progress' %}
+                                                    <span class="badge bg-warning text-dark">In Progress</span>
+                                                {% elif work_orders.status == 'fixed' %}
+                                                    <span class="badge bg-success">Fixed</span>
+                                                {% elif work_orders.status == 'not_fixed' %}
+                                                    <span class="badge bg-danger">Not Fixed</span>
+                                                {% endif %}
+                                            </td>
                                         
                                         </tr>
                                     {% endfor %}

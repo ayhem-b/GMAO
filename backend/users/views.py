@@ -22,12 +22,21 @@ def edit_user(request):
             user = User.objects.get(id=user_id)
             user.username = username
             user.email = email
+
+            # Update role
+            if role == "Admin":
+                user.is_staff = True
+                user.is_superuser = True
+            else:  # Role = "User"
+                user.is_staff = False
+                user.is_superuser = False
+
             user.save()
             return JsonResponse({"success": True})
         except User.DoesNotExist:
             return JsonResponse({"success": False, "error": "User not found"})
+    
     return JsonResponse({"success": False, "error": "Invalid request"})
-@login_required
 def delete_user(request):
     if request.method == "POST":
         user_id = request.POST.get("user_id")
@@ -46,8 +55,6 @@ def user_list(request):
 def admin(request):
     return render(request, "users/admin.html")
 def users_view(request):
-    user = request.user
-    interventions = Intervention.objects.all().order_by("-received_date")
     if request.method == 'POST':
             form = InterventionForm(request.POST)
             intervention = Intervention.objects.create(technicien=request.user, )
@@ -94,19 +101,28 @@ def user_logout(request):
         return redirect("users:login")
 def users_list(request):
     if request.method == "POST":
-        username = request.POST["username"]
-        email = request.POST["email"]
-        password = request.POST.get("password", "defaultpassword")  # Ensure a password is set
-        role = request.POST["role"]
+            username = request.POST["username"]
+            email = request.POST["email"]
+            password = request.POST.get("password", "defaultpassword")
+            role = request.POST["role"]
 
-        if User.objects.filter(username=username).exists():
-            messages.error(request, "Username already exists!")
-        else:
-            user = User.objects.create_user(username=username, email=email, password=password)
-            user.save()
-            messages.success(request, "User added successfully!")
+            if User.objects.filter(username=username).exists():
+                messages.error(request, "Username already exists!")
+            else:
+                user = User.objects.create_user(username=username, email=email, password=password)
 
-        return redirect("users:users_list")  
+                # 🔥 Set role
+                if role == "Admin":
+                    user.is_staff = True
+                    user.is_superuser = True
+                else:  # role == "User"
+                    user.is_staff = False
+                    user.is_superuser = False
+
+                user.save()
+                messages.success(request, "User added successfully!")
+
+            return redirect("users:users_list")
 
     users = User.objects.all()
     return render(request, 'users/users_list.html', {'users': users})

@@ -5,7 +5,7 @@ class InterventionForm(forms.ModelForm):
     class Meta:
         model = Intervention
         fields = [
-            
+            "work_order",
             "Machine",
             "received_date",
             "end_date",
@@ -17,6 +17,7 @@ class InterventionForm(forms.ModelForm):
             "comments",
         ]
         widgets = {
+            "work_order": forms.Select(attrs={"class": "form-control", "readonly": True}),
             "received_date": forms.DateTimeInput(attrs={"type": "datetime-local", "class": "form-control"}),
             "end_date": forms.DateTimeInput(attrs={"type": "datetime-local", "class": "form-control"}),
             "fault_category": forms.Select(attrs={"class": "form-control"}),

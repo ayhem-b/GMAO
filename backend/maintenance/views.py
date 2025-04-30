@@ -1,13 +1,15 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404
 from .models import Intervention, Machine
 from django.http import JsonResponse
 from collections import Counter
 from datetime import datetime
 from django.db.models import Count, Sum, F, ExpressionWrapper, DurationField
 from django.db.models.functions import TruncDate
-from maintenance.forms import WorkOrderForm , MachineForm
+from maintenance.forms import WorkOrderForm , MachineForm,InterventionForm
 from django.contrib.auth.decorators import login_required
 from .models import WorkOrder
+from maintenance.models import Intervention, Machine
+
 # Create your views here.
 
 def intervention_history(request):
@@ -95,7 +97,8 @@ def work_order(request):
         form = WorkOrderForm(request.POST)
         if form.is_valid():
             work_order = form.save()  # Save the form and get the work order instance
-
+            work_order.status="waiting"
+            work_order.save()
             # Now update the machine status
             work_order.machine_id.status = "not_fixed"  # machine_id is the ForeignKey to Machine
             work_order.machine_id.save()  # Save the updated machine status
@@ -104,9 +107,45 @@ def work_order(request):
     else:
         form = WorkOrderForm()
 
-    work_orders = WorkOrder.objects.all()  # Get all work orders
+    work_orders = WorkOrder.objects.all().order_by("-created_at") # Get all work orders
     return render(request, 'maintenance/work_order.html', {'form': form, 'work_orders': work_orders})
 def breakdowns(request):
+
     # Fetch all work orders from the database
     work_orders = WorkOrder.objects.all()
     return render(request, 'maintenance/breakdowns.html', {'work_orders': work_orders})
+
+
+def user_work_order(request):
+    orders = WorkOrder.objects.all().order_by('-created_at')
+    return render(request, 'maintenance/user_work_orders.html', {'orders': orders})
+
+def add_intervention(request):
+    work_order_id = request.GET.get('work_order_id')
+    work_order = get_object_or_404(WorkOrder, pk=work_order_id)
+
+    if request.method == 'POST':
+        form = InterventionForm(request.POST)
+        if form.is_valid():
+            intervention = form.save(commit=False)
+            intervention.technicien = request.user
+            intervention.work_order = work_order
+            intervention.work_order.status="in_progress"
+            intervention.work_order.save()
+            intervention.save()
+
+            # Update machine status if needed
+            if intervention.Machine and intervention.end_date:
+                intervention.Machine.status = "fixed"
+                intervention.work_order.status="fixed"
+                intervention.work_order.save()
+                intervention.Machine.save()
+
+            return redirect('users:users')  # Redirect after success
+    else:
+        form = InterventionForm(initial={'work_order': work_order})
+
+    return render(request, 'users/users.html', {
+        'form': form,
+        'work_order': work_order,
+    })

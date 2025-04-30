@@ -27,7 +27,7 @@ class Machine(models.Model):
 class WorkOrder(models.Model):
  
     STATUS_CHOICES = [
-            ('Working', 'Working'),
+            ('waiting', 'waiting'),
             ('in_progress', 'In Progress'),
             ('fixed', 'Fixed Now'),
             ('not_fixed', 'Not Fixed'),
@@ -41,7 +41,7 @@ class WorkOrder(models.Model):
     assigned_user = models.ForeignKey('auth.User', null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
-        return f"{self.machine_name} - {self.status}"
+        return f"{self.machine_id} - {self.status}"
     
 
 
