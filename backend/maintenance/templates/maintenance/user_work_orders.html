@@ -77,27 +77,40 @@
             </header>
             <!-- Statistic Section -->
             <div class="container mt-5">
-                <h2 class="mb-4">Add New Intervention</h2>
-                <form method="post">
-                    {% csrf_token %}
-                    
-                    {{ form.non_field_errors }}
-                    
-                    {% for field in form %}
-                        <div class="mb-3">
-                            {{ field.label_tag }}
-                            {{ field }}
-                            {% if field.help_text %}
-                                <div class="form-text">{{ field.help_text }}</div>
-                            {% endif %}
-                            {% for error in field.errors %}
-                                <div class="text-danger">{{ error }}</div>
-                            {% endfor %}
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    {% for order in orders %}
+                    <div class="col">
+                        <div class="card h-100 shadow-sm border-danger">
+                            <div class="card-header bg-danger text-white">
+                                <strong>#{{ order.id }} - {{ order.machine_id }}</strong>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Description:</strong> {{ order.description|truncatechars:100 }}</p>
+                                <p><strong>Status:</strong> 
+                                    {% if order.status == 'waiting' %}
+                                         <span class="badge bg-secondary">Waiting</span>
+                                    {% elif order.status == 'in_progress' %}
+                                        <span class="badge bg-warning text-dark">In Progress</span>
+                                    {% elif order.status == 'fixed' %}
+                                        <span class="badge bg-success">Fixed</span>
+                                    {% elif order.status == 'not_fixed' %}
+                                        <span class="badge bg-danger">Not Fixed</span>
+                                    {% endif %}
+                                </p>
+                                <p><strong>Created:</strong> {{ order.created_at|date:"Y-m-d H:i" }}</p>
+                            </div>
+                            <div class="card-footer d-flex justify-content-between align-items-center">
+                              
+                                <a href="{% url 'maintenance:add_intervention' %}?work_order_id={{ order.id }}" class="btn btn-danger">
+                                    + Add Intervention
+                                </a>
+                            </div>
                         </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted">No work orders available.</p>
                     {% endfor %}
-                    
-                    <button type="submit" class="btn btn-danger">Save Intervention</button>
-                </form>
+                </div>
             </div>
 
         </div>

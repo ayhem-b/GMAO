@@ -29,17 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // ✅ Add & Remove Table Rows
-    const addRow = () => {
-        const table = document.getElementById("spare-parts-table").getElementsByTagName('tbody')[0];
-        const newRow = table.insertRow();
-
-        newRow.innerHTML = `
-            <td><input type="text" class="form-control"></td>
-            <td><input type="number" class="form-control"></td>
-            <td><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">Supprimer</button></td>
-        `;
-    };
+   
 
     window.addRow = addRow; // Ensure function is accessible globally
 

@@ -1,0 +1,43 @@
+{% extends 'users/admin_layout.html'  %}
+{% block main %}
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Work Orders List</h4>
+            <a href="{% url 'maintenance:create_work_order' %}" class="btn btn-light btn-sm">+ New Work Order</a>
+        </div>
+        <div class="card-body">
+            {% if work_orders %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-danger">
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Created At</th>
+                            
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for work_orders in work_orders %}
+                                <tr>
+                                    <td>{{ work_orders.machine_id }}</td>
+                                    <td>{{ work_orders.assigned_user }}</td>
+                                    <td>{{ work_orders.description|truncatechars:50 }}</td>
+                                    <td>{{ work_orders.status }}</td>
+                                    <td>{{ work_orders.created_at|date:"Y-m-d H:i" }}</td>
+                                
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted">No work orders found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
