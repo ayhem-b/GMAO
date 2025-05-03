@@ -6,118 +6,104 @@
 {% block main %}
  <!-- Main Section -->
  <section class="container my-4">
-    <div class="container mt-4 align-items-center">
-        <div class=" row mb-4">
-            <!-- Cards for Key Statistics -->
-            <div class="col-md-3">
-                <div class="card text-white bg-danger mb-3">
-                    <div class="card-header">Total Interventions</div>
-                    <div class="card-body">
-                        <h5 class="card-title" id="total-interventions">0</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-white bg-danger mb-3">
-                    <div class="card-header">Total Downtime</div>
-                    <div class="card-body">
-                        <h5 class="card-title" id="total-downtime">0h 0m</h5>
-                    </div>
+    <div class="container mt-4"  > <!-- Set height to center vertically -->
+    <div class="row h-100 justify-content-center align-items-center">
+        <!-- Card 1 -->
+        <div class="col-md-2">
+            <div class="card text-white text-center bg-danger mb-3">
+                <div class="card-header">Total Interventions</div>
+                <div class="card-body">
+                    <h5 class="card-title" id="total-interventions">0</h5>
                 </div>
             </div>
         </div>
-    
-        <!-- Charts Section -->
-        <div class="row">
-            <div id="total-interventions"></div>
-            <div id="total-downtime"></div>
+        <!-- Card 2 -->
+        <div class="col-md-2">
+            <div class="card text-white text-center bg-danger mb-3">
+                <div class="card-header">Total Downtime</div>
+                <div class="card-body">
+                    <h5 class="card-title" id="total-downtime">0h 0m</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+        <div class="container mt-4 ">
+        
+        
+            <!-- Charts Section -->
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                <div id="total-interventions"></div>
+                <div id="total-downtime"></div>
 
-            <!-- Display Charts -->
-            <div class="col-md-6">
-                <canvas id="categoryChart"></canvas>
-            </div>
-            <div class="col-md-6">
-                <canvas id="faultWhatChart"></canvas>
-            </div>
+                <!-- Display Charts -->
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-danger">
+                        <div class="card-header bg-danger text-white">Maintenance Category</div>
+                        <div class="card-body">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-danger">
+                        <div class="card-header bg-danger text-white text-center">USERS</div>
+                        <div class="card-body">
+                            <canvas id="interventionUserChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card  shadow-sm border-danger"     >
+                        <div class="card-header bg-danger text-white text-center">WHAT DEFAULTS</div>
+                        <div class="card-body">
+                            <canvas id="faultWhatChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-danger">
+                        <div class="card-header bg-danger text-white text-center">WHY DEFAULTS</div>
+                        <div class="card-body">
+                        <canvas id="faultWhyChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-danger">
+                        <div class="card-header bg-danger text-white text-center">WHERE DEFAULTS</div>
+                        <div class="card-body">
+                            
+                            <canvas id="faultWhereChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                    
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-danger">
+                        <div class="card-header bg-danger text-white text-center">Timeline</div>
+                        <div class="card-body">
+                            <canvas id="timelineChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-danger">
+                        <div class="card-header bg-danger text-white text-center">Spare Parts</div>
+                        <div class="card-body">
+                            <canvas id="sparePartsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
             
-            <div class="col-md-6">
-                <canvas id="faultWhyChart"></canvas></div>
-            <div class="col-md-6">
-                <canvas id="faultWhereChart"></canvas>
             </div>
-            <div class="col-md-6">
-                <canvas id="sparePartsChart"></canvas>
-            </div>
-           
-            <div class="col-md-6">
-                <canvas id="timelineChart"></canvas>
-            </div>
-         v>
-         
         </div>
     </div>
-    
   
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card shadow-sm border-danger">
-                <div class="card-header bg-danger text-white">Interventions par type de panne</div>
-                <div class="card-body">
-                    <canvas id="interventionChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card shadow-sm border-danger">
-                <div class="card-header bg-danger text-white">État des machines</div>
-                <div class="card-body">
-                    <canvas id="machineStatusChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row mt-4">
-        <div class="col-md-6">
-            <div class="card shadow-sm border-danger">
-                <div class="card-header bg-danger text-white">Nombre d’interventions par mois</div>
-                <div class="card-body">
-                    <canvas id="monthlyInterventionChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card shadow-sm border-danger">
-                <div class="card-header bg-danger text-white">Répartition des interventions par technicien
-                </div>
-                <div class="card-body">
-                    <canvas id="technicianInterventionChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row mt-4">
-        <div class="col-md-6">
-            <div class="card shadow-sm border-danger">
-                <div class="card-header bg-danger text-white">Durée moyenne des interventions</div>
-                <div class="card-body">
-                    <canvas id="avgDurationChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card shadow-sm border-danger">
-                <div class="card-header bg-danger text-white">Demandes en attente vs résolues</div>
-                <div class="card-body">
-                    <canvas id="pendingVsResolvedChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
+   
 </section>
   <!-- Chart.js Script -->
   <script>
@@ -132,13 +118,14 @@
         document.getElementById("total-downtime").innerText = `${Math.floor(downtime)}h ${Math.round((downtime % 1) * 60)}m`;
 
         // Create Fault Categories Chart
+        const cat_colors = data.faults_where.labels.map(() => getRandomColor());  // Generate a random color for each bar
         new Chart(document.getElementById("categoryChart"), {
             type: 'pie',
             data: {
                 labels: data.categories.labels,
                 datasets: [{
                     label: "Fault Categories",
-                    backgroundColor: "#dc3545",
+                    backgroundColor: cat_colors,
                     data: data.categories.values
                 }]
             }
@@ -166,7 +153,12 @@
                     label: "Fault Why",
                     backgroundColor: "#007bff",
                     data: data.faults_why.values
-                }]
+                }],
+                options: {
+                    scales: {
+                      y: { beginAtZero: true }
+                    }
+                  }
             }
         });
 
@@ -180,20 +172,18 @@
             return color;
         }
         
-        const colors = data.faults_where.labels.map(() => getRandomColor());  // Generate a random color for each bar
+        const where_colors = data.faults_where.labels.map(() => getRandomColor());  // Generate a random color for each bar
         
         new Chart(document.getElementById("faultWhereChart"), {
             type: 'bar',
             data: {
                 labels: data.faults_where.labels,
                 datasets: [{
-                    label: "Fault Where",
-                    backgroundColor: colors,  // Assign the generated colors to the bars
+                    label: "",  // Don't show 'null'
+                    backgroundColor: where_colors,
                     data: data.faults_where.values
                 }]
-            }
-        });
-
+            }        });
         // Create Spare Parts Chart
         new Chart(document.getElementById("sparePartsChart"), {
             type: 'bar',
@@ -203,7 +193,12 @@
                     label: "Spare Parts",
                     backgroundColor: "#dc3545",
                     data: data.spare_parts.values
-                }]
+                }],
+                options: {
+                    scales: {
+                      y: { beginAtZero: true }
+                    }
+                  }
             }
         });
 
@@ -227,5 +222,34 @@
     })
     .catch(error => console.error("Error fetching data: ", error));
    
+</script>
+<script>
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+    fetch('/intervention-data/')
+      .then(response => response.json())
+      .then(data => {
+        const user_colors = data.faults_where.labels.map(() => getRandomColor());
+        const ctx = document.getElementById('interventionUserChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: data.users.labels,
+            datasets: [{
+              label: 'Interventions per User',
+              data: data.users.values,
+              backgroundColor: user_colors,
+              
+            
+            }]
+          }
+        });
+      });
 </script>
 {% endblock  %}

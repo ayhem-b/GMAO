@@ -11,12 +11,12 @@ from .models import WorkOrder
 from maintenance.models import Intervention, Machine
 
 # Create your views here.
-
 def intervention_history(request):
     interventions = Intervention.objects.all().order_by('-received_date')  # Sort by most recent
     return render(request, 'maintenance/intervention_history.html', {'interventions': interventions})
 def intervention_data(request):
     interventions = Intervention.objects.all()
+    
 
     # 📊 Count by Fault Category
     category_counts = interventions.values("fault_category").annotate(count=Count("fault_category"))
@@ -58,7 +58,7 @@ def intervention_data(request):
         "labels": [str(entry["date"]) for entry in timeline_counts],
         "values": [entry["count"] for entry in timeline_counts]
     }
-
+   
     # ⏳ Total Downtime in Hours
     downtime_data = (
         interventions.filter(end_date__isnull=False)
@@ -67,9 +67,17 @@ def intervention_data(request):
     )
 
     total_downtime_hours = downtime_data["total_downtime"].total_seconds() / 3600 if downtime_data["total_downtime"] else 0
-    
-
+    user_counts = (
+        interventions.values("technicien__first_name")
+        .annotate(count=Count("id"))
+        .order_by("technicien__first_name")
+    )
+    user_data = {
+        "labels": [entry["technicien__first_name"] for entry in user_counts],
+        "values": [entry["count"] for entry in user_counts]
+    }
     # ✅ Return JSON Response
+    
     return JsonResponse({
         "categories": category_data,
         "faults_what": fault_what_data,
@@ -80,8 +88,10 @@ def intervention_data(request):
         "downtime": {
             "labels": ["Total Downtime"],
             "values": [total_downtime_hours]
-        }
+        },
+        "users": user_data
     })
+  
 def machines_charts(request):
     if request.method == 'POST':
         form = MachineForm(request.POST)
@@ -99,7 +109,7 @@ def work_order(request):
             work_order = form.save()  # Save the form and get the work order instance
             work_order.status="waiting"
             work_order.save()
-            # Now update the machine status
+            #update the machine status
             work_order.machine_id.status = "not_fixed"  # machine_id is the ForeignKey to Machine
             work_order.machine_id.save()  # Save the updated machine status
 
@@ -114,12 +124,9 @@ def breakdowns(request):
     # Fetch all work orders from the database
     work_orders = WorkOrder.objects.all()
     return render(request, 'maintenance/breakdowns.html', {'work_orders': work_orders})
-
-
 def user_work_order(request):
     orders = WorkOrder.objects.all().order_by('-created_at')
     return render(request, 'maintenance/user_work_orders.html', {'orders': orders})
-
 def add_intervention(request):
     work_order_id = request.GET.get('work_order_id')
     work_order = get_object_or_404(WorkOrder, pk=work_order_id)
@@ -132,6 +139,8 @@ def add_intervention(request):
             intervention.work_order = work_order
             intervention.work_order.status="in_progress"
             intervention.work_order.save()
+            intervention.Machine.status = "in_progress"
+            intervention.Machine.save()
             intervention.save()
 
             # Update machine status if needed

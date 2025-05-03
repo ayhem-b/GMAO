@@ -104,10 +104,11 @@ $(document).ready(function(){
     // Edit User Modal Setup
     $(".edit-user").click(function() {
         let userId = $(this).data("id");
+        let first_name = $(this).data("first_name");
         let username = $(this).data("username");
         let email = $(this).data("email");
         let role = $(this).data("role");
-
+        $("#editfirst_name").val(first_name);
         $("#editUserId").val(userId);
         $("#editUsername").val(username);
         $("#editEmail").val(email);

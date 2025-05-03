@@ -14,6 +14,7 @@ from maintenance.forms import InterventionForm
 def edit_user(request):
     if request.method == "POST":
         user_id = request.POST.get("user_id")
+        first_name = request.POST.get("first_name")
         username = request.POST.get("username")
         email = request.POST.get("email")
         role = request.POST.get("role")
@@ -21,6 +22,7 @@ def edit_user(request):
         try:
             user = User.objects.get(id=user_id)
             user.username = username
+            user.first_name = first_name
             user.email = email
 
             # Update role
@@ -98,10 +100,12 @@ def user_login(request):  # I Renamed the function to avoid conflict with built-
 def user_logout(request):
     if request.method == "POST":
         logout(request)
-        return redirect("users:login")
+        return redirect("users:login")   
+#this function is used toadd new users
 def users_list(request):
     if request.method == "POST":
-            username = request.POST["username"]
+            username = request.POST["ID"]
+            first_name = request.POST["first_name"]           
             email = request.POST["email"]
             password = request.POST.get("password", "defaultpassword")
             role = request.POST["role"]
@@ -109,7 +113,7 @@ def users_list(request):
             if User.objects.filter(username=username).exists():
                 messages.error(request, "Username already exists!")
             else:
-                user = User.objects.create_user(username=username, email=email, password=password)
+                user = User.objects.create_user(username=username,first_name=first_name, email=email, password=password)
 
                 # 🔥 Set role
                 if role == "Admin":
