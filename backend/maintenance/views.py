@@ -11,9 +11,8 @@ from .models import WorkOrder
 from maintenance.models import Intervention, Machine
 import json
 from django.views.decorators.csrf import csrf_exempt
-import snap7
-from snap7.util import set_bool
-from snap7.type import Areas
+from plc_manager_instance import plc
+
 last_inputs = {}
 PLC_IP = '192.168.10.5'
 # Create your views here.
@@ -173,32 +172,21 @@ def update_inputs(request):
         return JsonResponse({'status': 'updated'})
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
+@csrf_exempt
 def get_inputs(request):
-    return JsonResponse(last_inputs)
+    return JsonResponse(plc.get_inputs())
+
+@csrf_exempt
+def write_memory_bit(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        bit = int(data.get('bit', 0))
+        value = bool(data.get('value', 0))
+        plc.queue_write(bit, value)
+        return JsonResponse({"status": "queued", "bit": bit, "value": value})
+    return JsonResponse({"error": "Invalid request"}, status=400)
 
 def dashboard(request):
     input_bits = [f"I{byte}.{bit}" for byte in range(2) for bit in range(8)]  # I0.0 to I1.7
     return render(request, 'maintenance/dashboard.html', {'input_bits': input_bits})
 
-def write_memory_bit(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        value = bool(data.get('value', 0))
-
-        try:
-            client = snap7.client.Client()
-            client.connect(PLC_IP, 0, 1)
-
-            # Read memory byte 0 (M0.0–M0.7)
-            memory = client.read_area(Areas.MK, 0, 0, 1)
-
-            # Set bit 0 (M0.0)
-            set_bool(memory, 0, 0, value)
-
-            # Write back the modified byte
-            client.write_area(Areas.MK, 0, 0, memory)
-
-            client.disconnect()
-            return JsonResponse({"status": "success", "value": value})
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)

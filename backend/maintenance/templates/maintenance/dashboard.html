@@ -1,21 +1,127 @@
 {% extends 'users/admin_layout.html'  %}
+{% load static %}
 {% block main %}
 <body class="bg-light">
-    <style>
-    .status-on {
-      color: #198754;
-      font-weight: bold;
-    }
-    .status-off {
-      color: #dc3545;
-      font-weight: bold;
-    }
-    .card {
-      margin-top: 50px;
-    }
-  </style>
+<style>
+  .status-circle {
+    height: 50px;
+    width: 50px;
+    display: inline-block;
+    border-radius: 50%;
+    margin-left: 5px;
+    border: 2px solid #ccc; /* optional for a cleaner border */
+  }
+
+  .status-on {
+    background-color: #198754; /* Bootstrap green */
+  }
+
+  .status-off {
+    background-color: #dc3545; /* Bootstrap red */
+  }
+
+  .card {
+    margin-top: 50px;
+  }
+   .hmi-button {
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 15px 30px;
+    margin: 10px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 5px #999;
+    color: white;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    line-height: 1.2;
+    text-shadow: 1px 1px #333;
+  }
+
+  .hmi-button:active {
+    box-shadow: 0 2px #666;
+    transform: translateY(4px);
+  }
+
+  .start-btn {
+    background-color: #198754; /* Bootstrap green */
+  }
+
+  .stop-btn {
+    background-color: #dc3545; /* Bootstrap red */
+  }
+
+  .reset-btn {
+    background-color: #ffc107; /* Bootstrap yellow */
+    color: black;
+  }
+
+  .hmi-button:hover {
+    filter: brightness(1.2);
+  }
+   .machine-container {
+    position: relative;
+    width: 512px;
+    height: auto;
+    margin: auto;
+  }
+
+  .machine-image {
+    width: 100%;
+    display: block;
+  }
+
+  .indicator {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    background-color: grey;
+    box-shadow: 0 0 5px #000;
+  }
+
+  .on {
+    background-color: #28a745; /* green */
+  }
+
+  .off {
+    background-color: #dc3545; /* red */
+  }
+
+  .warning {
+    background-color: #ffc107; /* yellow */
+  }
+</style>
   <div class="container center ">
     <h1 class="text-center my-4">PLC Dashboard</h1>
+    <h5>Write to PLC Memory</h5>
+
+        <div class="mb-3 text-center">
+  <button class="hmi-button start-btn" onclick="writeMemory(0, 1)">START</button>
+  <button class="hmi-button stop-btn" onclick="writeMemory(0, 0)">STOP</button>
+</div>
+<div class="machine-container">
+  <img src="{% static 'img/Picture5.png' %}" class="machine-image" alt="Sorting machine">
+
+  <!-- Actuator: Vérin -->
+  <div id="verin-indicator" class="indicator" style="top: 80px; left: 360px;"></div>
+
+  <!-- Capteur -->
+  <div id="capteur-indicator" class="indicator" style="top: 70px; left: 100px;"></div>
+
+  <!-- Convoyeur -->
+  <div id="conveyor-indicator" class="indicator" style="top: 100px; left: 250px;"></div>
+
+  <!-- Chute blanche -->
+  <div id="white-chute-indicator" class="indicator" style="top: 130px; left: 390px;"></div>
+
+  <!-- Chute noire -->
+  <div id="black-chute-indicator" class="indicator" style="top: 150px; left: 420px;"></div>
+</div>
     
     <div class="card shadow-sm">
       <div class="card-body">
@@ -37,31 +143,90 @@
           </tbody>
         </table>
         <hr>
-      <h5>Write to PLC Memory</h5>
-
-<div class="mb-3">
-  <button class="btn btn-success" onclick="writeMemory(0, 1)">Set M0.0 ON</button>
-  <button class="btn btn-danger" onclick="writeMemory(0, 0)">Set M0.0 OFF</button>
-</div>
+      
 
     </div>
+    
   </div>
 <script>
  
  async function updateTable() {
-  const res = await fetch('/get-inputs/');
-  const data = await res.json();
+    try {
+      const res = await fetch('/get-inputs/');
+      if (!res.ok) {
+        console.error("Request failed:", res.status);
+        return;
+      }
 
-  for (const [key, value] of Object.entries(data)) {
-    const el = document.getElementById(key);
-    if (el) {
-      el.innerHTML = `<span class="${value ? 'status-on' : 'status-off'}">${value ? 'ON' : 'OFF'}</span>`;
+      const data = await res.json();
+      console.log("Received from /get-inputs/:", data);
+
+      for (const [key, value] of Object.entries(data)) {
+        const el = document.getElementById(key);
+        if (el) {
+          el.innerHTML = `<span class="status-circle ${value ? 'status-on' : 'status-off'}"></span>`;
+        }
+      }
+    } catch (err) {
+      console.error("Error during updateTable():", err);
     }
   }
-}
 setInterval(updateTable, 250);
 updateTable();
 </script>
+<script>
+  async function writeMemory(bit, value) {
+    try {
+      const res = await fetch('/write-memory-bit/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ bit: bit, value: value })
+      });
+
+      const data = await res.json();
+      console.log("Write result:", data);
+    } catch (error) {
+      console.error("Error writing to memory:", error);
+    }
+  }
+
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+</script>
+<script>async function updateTable() {
+  try {
+    const res = await fetch('/get-inputs/');
+    const data = await res.json();
+
+    // Example: if I0.0 is piston retracted, I0.1 is extended
+    document.getElementById("verin-indicator").className = "indicator " + (data["I0.1"] ? "on" : "off");
+    document.getElementById("capteur-indicator").className = "indicator " + (data["I0.2"] ? "on" : "off");
+    document.getElementById("conveyor-indicator").className = "indicator " + (data["Q1.0"] ? "on" : "off");
+    document.getElementById("white-chute-indicator").className = "indicator " + (data["I1.5"] ? "on" : "off");
+    document.getElementById("black-chute-indicator").className = "indicator " + (data["I0.4"] ? "on" : "off");
+
+  } catch (err) {
+    console.error("Update error:", err);
+  }
+}
+
+setInterval(updateTable, 1000);
+updateTable();</script>
 
 </body>
 {%endblock%}
