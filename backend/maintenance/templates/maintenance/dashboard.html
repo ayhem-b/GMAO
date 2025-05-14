@@ -1,0 +1,67 @@
+{% extends 'users/admin_layout.html'  %}
+{% block main %}
+<body class="bg-light">
+    <style>
+    .status-on {
+      color: #198754;
+      font-weight: bold;
+    }
+    .status-off {
+      color: #dc3545;
+      font-weight: bold;
+    }
+    .card {
+      margin-top: 50px;
+    }
+  </style>
+  <div class="container center ">
+    <h1 class="text-center my-4">PLC Dashboard</h1>
+    
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Real-Time Input States</h5>
+        <table class="table table-bordered text-center">
+          <thead class="table-light">
+            <tr>
+              <th>Input</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for input in input_bits %}
+              <tr>
+                <td>{{ input }}</td>
+                <td id="{{ input }}">...</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <hr>
+      <h5>Write to PLC Memory</h5>
+
+<div class="mb-3">
+  <button class="btn btn-success" onclick="writeMemory(0, 1)">Set M0.0 ON</button>
+  <button class="btn btn-danger" onclick="writeMemory(0, 0)">Set M0.0 OFF</button>
+</div>
+
+    </div>
+  </div>
+<script>
+ 
+ async function updateTable() {
+  const res = await fetch('/get-inputs/');
+  const data = await res.json();
+
+  for (const [key, value] of Object.entries(data)) {
+    const el = document.getElementById(key);
+    if (el) {
+      el.innerHTML = `<span class="${value ? 'status-on' : 'status-off'}">${value ? 'ON' : 'OFF'}</span>`;
+    }
+  }
+}
+setInterval(updateTable, 250);
+updateTable();
+</script>
+
+</body>
+{%endblock%}

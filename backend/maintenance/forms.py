@@ -36,7 +36,6 @@ class WorkOrderForm(forms.ModelForm):
         widgets = {
             'time_of_default': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         }
-
 class MachineForm(forms.ModelForm):
     class Meta:
         model = Machine

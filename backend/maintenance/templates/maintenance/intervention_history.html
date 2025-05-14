@@ -2,23 +2,27 @@
 
 {% block main %}
 <div class="container mt-4">
-    <h2 class="text-center">Historique des Interventions</h2>
-
+    <h2 class="text-center">Intevention History</h2>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <input type="text" id="search" class="form-control" placeholder="Search ...">
+        </div>
+    </div>
     <table class="table table-bordered table-striped">
         <thead class="table">
             <tr>
                 <th>Date</th>
-                <th>Matricule</th>
-                <th>Technicien</th>
-                <th>Catégorie</th>
-                <th>Défaut (What)</th>
-                <th>Défaut (Why)</th>
-                <th>Défaut (Where)</th>
+                <th>ID</th>
+                <th>User</th>
+                <th>Category</th>
+                <th>Default (What)</th>
+                <th>Default (Why)</th>
+                <th>Default (Where)</th>
                 <th>Spare parts</th>
-                <th>Commentaires</th>
+                <th>Comment</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="table">
             {% for intervention in interventions %}
             <tr>
                 <td>{{ intervention.received_date|date:"d/m/Y H:i" }}</td>
@@ -39,11 +43,33 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="8" class="text-center">Aucune intervention enregistrée.</td>
+                <td colspan="8" class="text-center">No Intervention Saved.</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
 </div>
+<script>
+    $(document).ready(function () {
+        // Search Functionality
+        $("#search").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#table tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+
+        // Sorting
+        $(".sort").click(function () {
+            var table = $("table tbody");
+            var rows = table.find("tr").toArray().sort((a, b) => {
+                var textA = $(a).find("td:nth-child(2)").text();
+                var textB = $(b).find("td:nth-child(2)").text();
+                return textA.localeCompare(textB);
+            });
+            table.append(rows);
+        });
+    });
+</script>
 {% endblock %}

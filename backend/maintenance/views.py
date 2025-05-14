@@ -9,7 +9,13 @@ from maintenance.forms import WorkOrderForm , MachineForm,InterventionForm
 from django.contrib.auth.decorators import login_required
 from .models import WorkOrder
 from maintenance.models import Intervention, Machine
-
+import json
+from django.views.decorators.csrf import csrf_exempt
+import snap7
+from snap7.util import set_bool
+from snap7.type import Areas
+last_inputs = {}
+PLC_IP = '192.168.10.5'
 # Create your views here.
 def intervention_history(request):
     interventions = Intervention.objects.all().order_by('-received_date')  # Sort by most recent
@@ -91,7 +97,6 @@ def intervention_data(request):
         },
         "users": user_data
     })
-  
 def machines_charts(request):
     if request.method == 'POST':
         form = MachineForm(request.POST)
@@ -158,3 +163,42 @@ def add_intervention(request):
         'form': form,
         'work_order': work_order,
     })
+@csrf_exempt
+@csrf_exempt
+def update_inputs(request):
+    global last_inputs
+    if request.method == "POST":
+        data = json.loads(request.body)
+        last_inputs.update(data)
+        return JsonResponse({'status': 'updated'})
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+def get_inputs(request):
+    return JsonResponse(last_inputs)
+
+def dashboard(request):
+    input_bits = [f"I{byte}.{bit}" for byte in range(2) for bit in range(8)]  # I0.0 to I1.7
+    return render(request, 'maintenance/dashboard.html', {'input_bits': input_bits})
+
+def write_memory_bit(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        value = bool(data.get('value', 0))
+
+        try:
+            client = snap7.client.Client()
+            client.connect(PLC_IP, 0, 1)
+
+            # Read memory byte 0 (M0.0–M0.7)
+            memory = client.read_area(Areas.MK, 0, 0, 1)
+
+            # Set bit 0 (M0.0)
+            set_bool(memory, 0, 0, value)
+
+            # Write back the modified byte
+            client.write_area(Areas.MK, 0, 0, memory)
+
+            client.disconnect()
+            return JsonResponse({"status": "success", "value": value})
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
