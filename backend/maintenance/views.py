@@ -163,7 +163,6 @@ def add_intervention(request):
         'work_order': work_order,
     })
 @csrf_exempt
-@csrf_exempt
 def update_inputs(request):
     global last_inputs
     if request.method == "POST":
