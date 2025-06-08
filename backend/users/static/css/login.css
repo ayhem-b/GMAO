@@ -1,5 +1,5 @@
 body {
-    background-color: #f8f9fa;
+    background-color: #054e97;
 }
 
 .card {
@@ -15,7 +15,7 @@ body {
 }
 
 .btn-danger:hover {
-    background-color: #a72424;
+    background-color: #bc4040;
 }
 
 .form-control {

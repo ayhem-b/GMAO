@@ -9,6 +9,7 @@ from queue import Queue
 
 class PLCManager:
     def __init__(self, plc_ip="192.168.10.5", django_url="http://127.0.0.1:8000/update-inputs/"):
+       
         self.client = snap7.client.Client()
         self.plc_ip = plc_ip
         self.django_url = django_url

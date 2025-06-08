@@ -89,14 +89,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-6">
-                    <div class="card shadow-sm border-danger">
-                        <div class="card-header bg-danger text-white text-center">Spare Parts</div>
-                        <div class="card-body">
-                            <canvas id="sparePartsChart"></canvas>
-                        </div>
-                    </div>
-                </div>
+                
                 
             
             </div>
@@ -106,150 +99,93 @@
    
 </section>
   <!-- Chart.js Script -->
-  <script>
-    fetch("{% url 'maintenance:intervention_data' %}")
-    .then(response => response.json())
-    .then(data => {
-        // Update Total Interventions Count
-        document.getElementById("total-interventions").innerText = data.categories.values.reduce((a, b) => a + b, 0);
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const colorMap = {};
+    let charts = {};
+    let firstLoad = true;
 
-        // Update Total Downtime
-        let downtime = data.downtime.values[0];
-        document.getElementById("total-downtime").innerText = `${Math.floor(downtime)}h ${Math.round((downtime % 1) * 60)}m`;
-
-        // Create Fault Categories Chart
-        const cat_colors = data.faults_where.labels.map(() => getRandomColor());  // Generate a random color for each bar
-        new Chart(document.getElementById("categoryChart"), {
-            type: 'pie',
-            data: {
-                labels: data.categories.labels,
-                datasets: [{
-                    label: "Fault Categories",
-                    backgroundColor: cat_colors,
-                    data: data.categories.values
-                }]
-            }
-        });
-
-        // Create Faults What Chart
-        new Chart(document.getElementById("faultWhatChart"), {
-            type: 'bar',
-            data: {
-                labels: data.faults_what.labels,
-                datasets: [{
-                    label: "Fault What",
-                    backgroundColor: "#ffc107",
-                    data: data.faults_what.values
-                }]
-            }
-        });
-
-        // Create Faults Why Chart
-        new Chart(document.getElementById("faultWhyChart"), {
-            type: 'bar',
-            data: {
-                labels: data.faults_why.labels,
-                datasets: [{
-                    label: "Fault Why",
-                    backgroundColor: "#007bff",
-                    data: data.faults_why.values
-                }],
-                options: {
-                    scales: {
-                      y: { beginAtZero: true }
-                    }
-                  }
-            }
-        });
-
-        // Create Faults Where Chart
-        function getRandomColor() {
+    function getColorForLabel(label) {
+        if (!colorMap[label]) {
             const letters = '0123456789ABCDEF';
             let color = '#';
             for (let i = 0; i < 6; i++) {
                 color += letters[Math.floor(Math.random() * 16)];
             }
-            return color;
+            colorMap[label] = color;
         }
-        
-        const where_colors = data.faults_where.labels.map(() => getRandomColor());  // Generate a random color for each bar
-        
-        new Chart(document.getElementById("faultWhereChart"), {
-            type: 'bar',
-            data: {
-                labels: data.faults_where.labels,
-                datasets: [{
-                    label: "",  // Don't show 'null'
-                    backgroundColor: where_colors,
-                    data: data.faults_where.values
-                }]
-            }        });
-        // Create Spare Parts Chart
-        new Chart(document.getElementById("sparePartsChart"), {
-            type: 'bar',
-            data: {
-                labels: data.spare_parts.labels,
-                datasets: [{
-                    label: "Spare Parts",
-                    backgroundColor: "#dc3545",
-                    data: data.spare_parts.values
-                }],
-                options: {
-                    scales: {
-                      y: { beginAtZero: true }
-                    }
-                  }
-            }
-        });
-
-        // Create Timeline Chart (Interventions Over Time)
-        new Chart(document.getElementById("timelineChart"), {
-            type: 'line',
-            data: {
-                labels: data.timeline.labels,
-                datasets: [{
-                    label: "Interventions Over Time",
-                    backgroundColor: "dc3545",
-                    borderColor: "dc3545",
-                    data: data.timeline.values,
-                    fill: true
-                }]
-            }
-        });
-
-        // Create Downtime Chart
-       
-    })
-    .catch(error => console.error("Error fetching data: ", error));
-   
-</script>
-<script>
-    function getRandomColor() {
-        const letters = '0123456789ABCDEF';
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
+        return colorMap[label];
     }
-    fetch('/intervention-data/')
-      .then(response => response.json())
-      .then(data => {
-        const user_colors = data.faults_where.labels.map(() => getRandomColor());
-        const ctx = document.getElementById('interventionUserChart').getContext('2d');
-        new Chart(ctx, {
-          type: 'pie',
-          data: {
-            labels: data.users.labels,
-            datasets: [{
-              label: 'Interventions per User',
-              data: data.users.values,
-              backgroundColor: user_colors,
-              
-            
-            }]
-          }
+
+    function createOrUpdateChart(id, type, labels, dataValues, labelText, useRandomColors = false) {
+        const ctx = document.getElementById(id);
+        if (!ctx) return;
+
+        // Destroy old chart if it exists
+        if (charts[id]) {
+            charts[id].destroy();
+        }
+
+        const backgroundColors = useRandomColors
+            ? labels.map(label => getColorForLabel(label))
+            : "#dc3545";
+
+        charts[id] = new Chart(ctx, {
+            type: type,
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: labelText,
+                    data: dataValues,
+                    backgroundColor: backgroundColors,
+                    borderColor: backgroundColors,
+                    fill: type === "line"
+                }]
+            },
+            options: {
+                responsive: true,
+                animation: firstLoad,  // Animate only on first load
+                scales: (type === 'bar' || type === 'line') ? {
+                    y: {
+                        beginAtZero: true
+                    }
+                } : undefined
+            }
         });
-      });
+    }
+
+    function updateDashboard() {
+        fetch("{% url 'maintenance:intervention_data' %}")
+            .then(response => response.json())
+            .then(data => {
+                // Update text
+                const totalInterventions = data.categories.values.reduce((a, b) => a + b, 0);
+                const downtime = data.downtime.values[0];
+                document.getElementById("total-interventions").innerText = totalInterventions;
+                document.getElementById("total-downtime").innerText = `${Math.floor(downtime)}h ${Math.round((downtime % 1) * 60)}m`;
+
+                // Update all charts
+                createOrUpdateChart("categoryChart", "pie", data.categories.labels, data.categories.values, "Fault Categories", true);
+                createOrUpdateChart("faultWhatChart", "bar", data.faults_what.labels, data.faults_what.values, "Fault What");
+                createOrUpdateChart("faultWhyChart", "bar", data.faults_why.labels, data.faults_why.values, "Fault Why");
+                createOrUpdateChart("faultWhereChart", "bar", data.faults_where.labels, data.faults_where.values, "Fault Where", true);
+                createOrUpdateChart("interventionUserChart", "pie", data.users.labels, data.users.values, "Interventions per User", true);
+                createOrUpdateChart("timelineChart", "line", data.timeline.labels, data.timeline.values, "Interventions Over Time");
+                createOrUpdateChart("sparePartsChart", "bar", data.spare_parts.labels, data.spare_parts.values, "Spare Parts");
+
+                // After first load, disable animation for future updates
+                firstLoad = false;
+            })
+            .catch(error => {
+                console.error("Error fetching dashboard data:", error);
+            });
+    }
+
+    updateDashboard(); // Initial load with animation
+    setInterval(updateDashboard, 500); // Update every 30s without animation
+    });
 </script>
+
+
 {% endblock  %}
